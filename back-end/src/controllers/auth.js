@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const shortid = require("shortid");
 const jwt = require("jsonwebtoken");
-const { validationResult } = require('express-validator');
 
 exports.signup = (req, res) => {
 
@@ -27,7 +26,7 @@ exports.signup = (req, res) => {
                 email,
                 password,
                 username: shortid.generate(),
-
+                //default role:"user"
             })
 
             _user.save((error, data) => {
@@ -56,7 +55,8 @@ exports.signin = (req, res) => {
 
                 //tao token va tzian cua token
                 if (user.authenticate(req.body.password)) {
-                    const token = jwt.sign({ _id: user._id },
+                    //token gom 2 tải trọng là id và role
+                    const token = jwt.sign({ _id: user._id, role: user.role  },
                         process.env.JWT_SECRET,
                         { expiresIn: '1h' }
                     );
@@ -79,12 +79,3 @@ exports.signin = (req, res) => {
         })
 }
 
-exports.requireSignin = (req, res, next) => {
-    // tach token
-    const token = req.headers.authorization.split(" ")[1];
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(user)
-    req.user = user;
-    next();
-    // jwt.decode()
-}

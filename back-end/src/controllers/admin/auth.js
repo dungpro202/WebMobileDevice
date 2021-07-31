@@ -52,9 +52,10 @@ exports.signin = (req, res) => {
 
             if (user) {
 
-                //tao token va tzian cua token
+                //tao token va tzian cua token cua admin
                 if (user.authenticate(req.body.password) && user.role === 'admin') {
-                    const token = jwt.sign({ _id: user._id },
+                    //token gom 2 tải trọng là id và role
+                    const token = jwt.sign({ _id: user._id, role: user.role },
                         process.env.JWT_SECRET,
                         { expiresIn: '1h' }
                     );
@@ -77,11 +78,3 @@ exports.signin = (req, res) => {
         })
 }
 
-exports.requireSignin = (req, res, next) => {
-    // tach token
-    const token = req.headers.authorization.split(" ")[1];
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = user;
-    next();
-    // jwt.decode()
-}

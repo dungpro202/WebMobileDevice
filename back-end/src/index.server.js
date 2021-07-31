@@ -1,12 +1,12 @@
 const express = require('express');
 const env = require('dotenv');
 const app = express();
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 //routes
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
+const categoryRoutes = require('./routes/category')
 
 //bien moi truong
 env.config();
@@ -25,9 +25,11 @@ mongoose.connect(
 
 
 // phần mềm trung gian để hiểu post lên json
-app.use(bodyParser());
+app.use(express.json());
 app.use('/api',authRoutes);
 app.use('/api',adminRoutes);
+app.use('/api',categoryRoutes);
+
 
 
 
