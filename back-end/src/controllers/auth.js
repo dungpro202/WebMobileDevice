@@ -1,9 +1,11 @@
 const User = require('../models/user');
 const shortid = require("shortid");
 const jwt = require("jsonwebtoken");
-const {validionResult} = require('express-validator')
+const { validationResult } = require('express-validator');
 
 exports.signup = (req, res) => {
+
+
     // email ko trung lap => co the tim kim theo email
     User.findOne({ email: req.body.email })
         .exec((err, user) => {
