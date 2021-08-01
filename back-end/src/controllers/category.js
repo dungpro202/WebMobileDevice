@@ -2,7 +2,7 @@ const Category = require('../models/category');
 // const slugify = require('slugify')
 const slug_vietnamese = require('slug-vietnamese');
 
-
+// tra ve danh sach long nhau
 const createCategories = (categories, parentId = null) => {
     const categoryList = [];
     let category;
