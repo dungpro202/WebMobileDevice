@@ -31,12 +31,18 @@ const createCategories = (categories, parentId = null) => {
 
 //Them moi 1 danh muc
 module.exports.addCategory = (req, res, next) => {
+
+    let categoryImage;
     //Tao moi 
     const categoryObject = {
         name: req.body.name,
-        slug: slug_vietnamese(req.body.name)
+        slug: slug_vietnamese(req.body.name),
     };
-
+    
+    if (req.file) {
+        categoryImage = req.file.filename;
+        categoryObject.categoryImage=process.env.API+'/public/' +categoryImage;
+    }
     //Kiem tra id cha co ton tai hay ko
     if (req.body.parentId) {
         categoryObject.parentId = req.body.parentId;
