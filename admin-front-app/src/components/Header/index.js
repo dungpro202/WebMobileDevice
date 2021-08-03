@@ -12,7 +12,7 @@ const Header = (props) => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
-        <Link to="/"  class="navbar-brand" >Admin Dashboard</Link>
+        <Link to="/"  className="navbar-brand" >Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
