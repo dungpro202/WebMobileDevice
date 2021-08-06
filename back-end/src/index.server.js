@@ -3,6 +3,7 @@ const env = require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
+const cors = require('cors');
 
 //routes
 const authRoutes = require('./routes/auth');
@@ -29,6 +30,8 @@ mongoose.connect(
 
 
 // phần mềm trung gian để hiểu post lên json
+//cors knoi front end vs back end
+app.use(cors());
 app.use(express.json());
 app.use('/public',express.static(path.join(__dirname, 'uploads')));
 app.use('/api',authRoutes);
