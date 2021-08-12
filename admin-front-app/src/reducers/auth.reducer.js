@@ -18,16 +18,21 @@ const authReducer = (state = initState, action) => {
         case authConstants.LOGIN_REQUEST:
             state = {
                 ...state,
-                authenticating:true
+                authenticating: true
             };
             break;
         case authConstants.LOGIN_SUCCESS:
             state = {
                 ...state,
-                user:action.payload.user,
-                token:action.payload.token,
-                authenticate:true,
-                authenticating:false
+                user: action.payload.user,
+                token: action.payload.token,
+                authenticate: true,
+                authenticating: false
+            };
+            break;
+        case authConstants.LOGOUT_REQUEST:
+            state = {
+                ...initState
             };
             break;
         default:

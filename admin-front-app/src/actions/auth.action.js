@@ -34,6 +34,8 @@ export const login = (user) => {
     }
 }
 
+
+//ktra da login chua 
 export const isUSerLoggedIn = () => {
     return async dispatch => {
         const token = localStorage.getItem('token');
@@ -53,5 +55,14 @@ export const isUSerLoggedIn = () => {
                 }
             });
         }
+    }
+}
+
+export const signout = () => {
+    return async dispatch => {
+        localStorage.clear();
+        dispatch({
+            type: authConstants.LOGOUT_REQUEST
+        });
     }
 }
