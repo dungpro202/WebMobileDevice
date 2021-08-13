@@ -51,7 +51,6 @@ exports.signin = (req, res) => {
             }
 
             if (user) {
-
                 //tao token va tzian cua token cua admin
                 if (user.authenticate(req.body.password) && user.role === 'admin') {
                     //token gom 2 tải trọng là id và role
@@ -60,6 +59,8 @@ exports.signin = (req, res) => {
                         { expiresIn: '1h' }
                     );
                     const { _id, firstName, lastName, email, role, fullName } = user;
+                    //luu cookie
+                    res.cookie('token', token, { expiresIn: '1h' })
                     res.status(200).json({
                         token,
                         user: {
@@ -78,3 +79,7 @@ exports.signin = (req, res) => {
         })
 }
 
+exports.signout = (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Signout Success.....!' })
+}

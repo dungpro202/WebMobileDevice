@@ -32,7 +32,7 @@ exports.isRequestValidated =(req,res,next)=>{
     const errors = validationResult(req);
 
     if(errors.array().length > 0){
-        return res.status(400).json({ sumerrr:errors.array().length ,errors:errors.array()[0].msg });
+        return res.status(400).json({ sumErr:errors.array().length ,errors:errors.array()[0].msg });
     }
     // ko co mang loi ->next
     next();

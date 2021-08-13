@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 //Header
 // Content-type : application/json
 //Authorization : Bearer token
+
+// kiem tra user
 exports.requireSignin = (req, res, next) => {
 
     if (req.headers.authorization) {
