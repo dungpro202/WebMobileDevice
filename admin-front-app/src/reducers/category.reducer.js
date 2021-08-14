@@ -10,23 +10,35 @@ const initState = {
 const buildNewCategories = (parentId, categories, category) => {
     let myCategories = [];
 
+    if (parentId === undefined) {
+        return [
+            ...categories,
+            {
+                _id: category._id,
+                name: category.name,
+                slug: category.slug,
+                children: [],
+            }
+        ]
+    }
+
     for (let cat of categories) {
 
         if (cat._id === parentId) {
             myCategories.push({
                 ...cat,
-                children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, [...cat.children,{
-                    _id:category._id,
-                    name:category.name,
-                    slug:category.slug,
-                    parentId:category.parentId,
+                children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, [...cat.children, {
+                    _id: category._id,
+                    name: category.name,
+                    slug: category.slug,
+                    parentId: category.parentId,
                     children: category.children,
                 }], category) : []
             })
-        }else{
+        } else {
             myCategories.push({
                 ...cat,
-                children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, cat.children, category) : []
+                children: cat.children  ? buildNewCategories(parentId, cat.children, category) : []
             })
 
         }
@@ -50,11 +62,11 @@ const categoryReducer = (state = initState, action) => {
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORIES_SUCCESS:
-            const updateCategoris = buildNewCategories(action.payload.category.parentId,state.categories, action.payload.category);
+            const updateCategoris = buildNewCategories(action.payload.category.parentId, state.categories, action.payload.category);
             console.log(updateCategoris)
             state = {
                 ...state,
-                categories:updateCategoris,
+                categories: updateCategoris,
                 loading: false,
             }
             break;

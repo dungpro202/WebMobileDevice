@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Container,  Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, getAllCategory } from '../../actions';
+import { addCategory } from '../../actions';
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input';
+import NewModal from '../../components/UI/NewModal';
 
 /**
 * @author
@@ -19,26 +20,24 @@ const Category = (props) => {
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log('Category')
-        dispatch(getAllCategory())
-    }, []);
+    // useEffect(() => {
+    //     console.log('Category')
+    //     dispatch(getAllCategory())
+    // }, []);
 
 
     const handleClose = () => setShow(false);
-    const handleSave = () =>{
+    const handleSave = () => {
         //body : form -data
         const form = new FormData();
-        form.append('name',categoryName);
-        form.append('parentId',parentCategoryId);
-        form.append('categoryImage',categoryImage);
+        form.append('name', categoryName);
+        form.append('parentId', parentCategoryId);
+        form.append('categoryImage', categoryImage);
         dispatch(addCategory(form));
-        const cat={
-            categoryName,
-            parentCategoryId,
-            categoryImage,
-        };
-        console.log('cat', cat)
+
+        setCategoryName('');
+        setParentCategoryId('')
+        
         setShow(false)
     }
     const handleShow = () => setShow(true);
@@ -70,7 +69,7 @@ const Category = (props) => {
         return options;
     }
 
-    const handleCategoryImage = (e)=>{
+    const handleCategoryImage = (e) => {
         setCategoryImage(e.target.files[0])
     }
 
@@ -98,38 +97,32 @@ const Category = (props) => {
             </Container>
 
             {/* Add */}
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Thêm mới Danh Mục </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Input
-                        value={categoryName}
-                        placeholder={'Category Name'}
-                        onChange={(e) => { setCategoryName(e.target.value) }}
-                    />
-                    <select 
-                    className="form-control" 
+
+            <NewModal
+                show={show}
+                handleClose={handleClose}
+                modalTitle={'Thêm Mới Category'}
+                handSave={handleSave}
+            >
+                <Input
+                    value={categoryName}
+                    placeholder={'Category Name'}
+                    onChange={(e) => { setCategoryName(e.target.value) }}
+                />
+                <select
+                    className="form-control"
                     value={parentCategoryId}
                     onChange={(e) => setParentCategoryId(e.target.value)}
-                    >
-                        <option>Select Category Parent</option>
-                        {createCategoryList(category.categories).map(option =>
-                            <option key={option.value} value={option.value}>{option.name}</option>
-                        )}
-                    </select>
+                >
+                    <option>Select Category Parent</option>
+                    {createCategoryList(category.categories).map(option =>
+                        <option key={option.value} value={option.value}>{option.name}</option>
+                    )}
+                </select>
 
-                    <input type="file" name="Category Image" onChange={handleCategoryImage}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Thoát
-                    </Button>
-                    <Button variant="primary" onClick={handleSave}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                <input type="file" name="Category Image" onChange={handleCategoryImage} />
+            </NewModal>
+            
         </Layout>
     )
 
