@@ -56,11 +56,11 @@ exports.signin = (req, res) => {
                     //token gom 2 tải trọng là id và role
                     const token = jwt.sign({ _id: user._id, role: user.role },
                         process.env.JWT_SECRET,
-                        { expiresIn: '1h' }
+                        { expiresIn: '1d' }
                     );
                     const { _id, firstName, lastName, email, role, fullName } = user;
                     //luu cookie
-                    res.cookie('token', token, { expiresIn: '1h' })
+                    res.cookie('token', token, { expiresIn: '1d' })
                     res.status(200).json({
                         token,
                         user: {
