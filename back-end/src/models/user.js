@@ -52,11 +52,11 @@ const userSchema = new mongoose.Schema({
 
 // tao mat khau bam
 // virtual is a property that is not stored in MongoDB.
-userSchema.virtual('password')
-    .set(function (password) {
-        // this.hash_password = bcrypt.hashSync(password,salt);
-        this.hash_password = bcrypt.hashSync(password, 10);
-    })
+// userSchema.virtual('password')
+//     .set(function (password) {
+//         // this.hash_password = bcrypt.hashSync(password,salt);
+//         this.hash_password = bcrypt.hashSync(password, 10);
+//     })
 
 userSchema.virtual('fullName')
     .get(function () {
@@ -65,8 +65,8 @@ userSchema.virtual('fullName')
 
 // so sanh mat khau bam
 userSchema.methods = {
-    authenticate: function (password) {
-        return bcrypt.compareSync(password, this.hash_password)
+    authenticate: async function (password) {
+        return await bcrypt.compareSync(password, this.hash_password)
     }
 }
 
