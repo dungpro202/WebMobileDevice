@@ -39,10 +39,10 @@ module.exports.addCategory = (req, res, next) => {
         name: req.body.name,
         slug: slug_vietnamese(req.body.name),
     };
-    
+
     if (req.file) {
         categoryImage = req.file.filename;
-        categoryObject.categoryImage=process.env.API+'/public/' +categoryImage;
+        categoryObject.categoryImage = process.env.API + '/public/' + categoryImage;
     }
     //Kiem tra id cha co ton tai hay ko
     if (req.body.parentId) {
@@ -95,7 +95,40 @@ module.exports.getCategories = (req, res, next) => {
             //Tim thanh cong
             if (categories) {
                 const categoryList = createCategories(categories);
-                return res.status(200).json({  categoryList })
+                return res.status(200).json({ categoryList })
             }
         });
+}
+
+//edit category
+exports.updateCategories = async (req, res) => {
+    const {_id,name,parentId,type}=req.body;
+    const updateCategories=[];
+    // kiem tra name co phai la 1  array
+    if(name instanceof Array) {
+        for(let i=0;i<name.length;i++){
+            const category = {
+                name:name[i],
+                type:type[i]
+            };
+            if(parentId[i] !== ""){
+                category.parentId = parentId[i];
+            }
+
+            const updateCategory= await Category.findOneAndUpdate({_id: _id[i]},category,{new:true});
+            updateCategories.push(updateCategory);
+        }
+        return res.status(201).json({updateCategories:updateCategories});
+    }else{
+        const category = {
+            name,
+            type
+        };
+        if(parentId !== ""){
+            category.parentId = parentId;
+        }
+        const updateCategory= await Category.findOneAndUpdate({_id},category,{new:true});
+        return res.status(201).json({updateCategory:updateCategory});
+
+    }
 }
