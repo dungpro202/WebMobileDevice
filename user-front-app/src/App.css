@@ -1,0 +1,12 @@
+*{
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    background:#F5F8FD;
+}
+.flexRow{
+    display: flex;
+}
+.sb{
+    justify-content: space-between;
+}
