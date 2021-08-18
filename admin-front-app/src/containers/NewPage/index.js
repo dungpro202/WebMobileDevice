@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPage } from '../../actions';
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input';
 import NewModal from '../../components/UI/NewModal'
@@ -19,14 +20,37 @@ const NewPage = (props) => {
     const [categories, setCategories] = useState([])
     const [categoryId, setCategoryId] = useState('');
     const [desc, setDesc] = useState('');
+    const [type, setType] = useState('');
     const [banners, setBanners] = useState([]);
     const [products, setProducts] = useState([]);
+
+    const page = useSelector(state => state.page);
 
     useEffect(() => {
         setCategories(linearCategories(category.categories))
     }, [category])
 
-    console.log('category.categories', category.categories)
+    useEffect(() => {
+        console.log(page);
+        if (!page.loading) {
+            setCreateModal(false);
+            setTitle('');
+            setCategoryId('');
+            setDesc('');
+            setProducts([]);
+            setBanners([]);
+        }
+    }, [page]);
+
+    const dispatch = useDispatch();
+
+    const onCategoryChange = (e) => {
+        //Tim kiem theo id
+        const category = categories.find(category => category.value == e.target.value)
+
+        setCategoryId(e.target.value);
+        setType(category.type);
+    }
 
     const handleBannerImages = (e) => {
         console.log(e);
@@ -38,30 +62,66 @@ const NewPage = (props) => {
         setProducts([...products, e.target.files[0]]);
     }
 
+    const submitPageForm = (e) => {
+        if (title === "") {
+            alert('Title is required');
+            setCreateModal(false);
+            return;
+        }
+        const form = new FormData();
+        form.append('title', title);
+        form.append('description', desc);
+        form.append('category', categoryId);
+        form.append('type', title);
+
+        banners.forEach((banner, index) => {
+            form.append('banners', banner)
+        })
+        console.log("lllasddddddddddddddl")
+
+        products.forEach((product, index) => {
+            form.append('products', product)
+        })
+        console.log("12312465464646")
+
+        dispatch(createPage(form))
+
+        // setCreateModal(false);
+    }
+
     const renderCreatePageModal = () => {
         return (
             <NewModal
                 show={createModal}
                 modalTitle={'Create New Page'}
                 handleClose={() => setCreateModal(false)}
-                handleSave={() => setCreateModal(false)}
+                handleSave={submitPageForm}
             >
                 <Container>
 
                     <Row>
                         <Col>
-                            <select
+                            {/* <select
                                 className="form-control form-control-sm"
                                 value={categoryId}
-                                onChange={(e) => setCategoryId(e.target.value)}
+                                onChange={onCategoryChange}
                             >
                                 <option value="">select category</option>
                                 {
                                     categories.map(cat =>
-                                        <option key={cat._id} value={cat._id}>{cat.name}</option>
+                                        <option key={cat.value} value={cat.value}>{cat.name}</option>
+
                                     )
                                 }
-                            </select>
+                            </select> */}
+
+                            <Input
+                                type="select"
+                                value={categoryId}
+                                onChange={onCategoryChange}
+                                options={categories}
+                                placeholder={'Select Category'}
+                            />
                         </Col>
                     </Row>
                     <Row>
@@ -84,21 +144,37 @@ const NewPage = (props) => {
                             />
                         </Col>
                     </Row>
+                    {
+                        banners.length > 0 ?
+                            banners.map((banner, index) =>
+                                <Row key={index}>
+                                    <Col>{banner.name}</Col>
+                                </Row>
+                            ) : null
+                    }
                     <Row>
                         <Col>
                             <Input
-                                className="form-control" 
-                                type="file" 
+                                className="form-control"
+                                type="file"
                                 name="banners"
                                 onChange={handleBannerImages}
                             />
                         </Col>
                     </Row>
+                    {
+                        products.length > 0 ?
+                            products.map((product, index) =>
+                                <Row key={index}>
+                                    <Col>{product.name}</Col>
+                                </Row>
+                            ) : null
+                    }
                     <Row>
                         <Col>
-                            <Input 
+                            <Input
                                 className="form-control"
-                                type="file" 
+                                type="file"
                                 name="products"
                                 onChange={handleProductImages}
                             />
@@ -109,12 +185,19 @@ const NewPage = (props) => {
             </NewModal>
         )
     }
-    console.log(createModal)
 
     return (
         <Layout sidebar>
-            {renderCreatePageModal()}
-            <button onClick={() => setCreateModal(true)}>Create Page</button>
+            {
+                page.loading ?
+                    <h1>Createing Page.... please wait...</h1>
+                    :
+                    <>
+                        {renderCreatePageModal()}
+                        <button onClick={() => setCreateModal(true)}>Create Page</button>
+                    </>
+            }
+
         </Layout>
     )
 

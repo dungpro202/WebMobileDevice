@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategory, deleteCategories as deleteCategoriesAction, getAllCategory, updateCategories } from '../../actions';
@@ -37,6 +37,12 @@ const Category = (props) => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if(!category.loading){
+            setShow(false);
+        }
+    },[category.loading])
+
     // handel action Add Model
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -47,6 +53,7 @@ const Category = (props) => {
 
         if (categoryName === "") {
             alert("Name is required");
+            setShow(false);
             return;
         }
         form.append('name', categoryName);

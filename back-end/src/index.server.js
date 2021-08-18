@@ -12,6 +12,7 @@ const categoryRoutes = require('./routes/category')
 const productRoutes = require('./routes/product')
 const cartRoutes = require('./routes/cart')
 const initialData = require('./routes/admin/initialData')
+const pageRoutes = require('./routes/admin/page')
 
 //bien moi truong
 env.config();
@@ -22,8 +23,8 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex:true,
-        useFindAndModify:false,
+        useCreateIndex: true,
+        useFindAndModify: false,
     }
 ).then(() => {
     console.log('Database connected')
@@ -34,13 +35,14 @@ mongoose.connect(
 //cors knoi front end vs back end
 app.use(cors());
 app.use(express.json());
-app.use('/public',express.static(path.join(__dirname, 'uploads')));
-app.use('/api',authRoutes);
-app.use('/api',adminRoutes);
-app.use('/api',categoryRoutes);
-app.use('/api',productRoutes);
-app.use('/api',cartRoutes);
-app.use('/api',initialData);
+app.use('/public', express.static(path.join(__dirname, 'uploads')));
+app.use('/api', authRoutes);
+app.use('/api', adminRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', productRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', initialData);
+app.use('/api', pageRoutes);
 
 
 

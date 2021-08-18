@@ -19,13 +19,16 @@ function App() {
   const auth = useSelector(state => state.auth);
 
 
+  //ComponentDidUpdate
   useEffect(() => {
     if (!auth.authenticate) {
       dispatch(isUSerLoggedIn())
     }
     //load trc danh muc va product
-    dispatch(getInitialData())
-  }, []);
+    if (auth.authenticate) {
+      dispatch(getInitialData())
+    }
+  }, [auth.authenticate,dispatch]);
 
   return (
     <div className="App">

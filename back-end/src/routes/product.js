@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireSignin, adminMiddleware } = require('../common-middleware/index');
-const { createProduct, getProductsBySlug } = require('../controllers/product');
+const { createProduct, getProductsBySlug, getProductDetailsById } = require('../controllers/product');
 const shortid = require('shortid');
 const multer = require('multer');
 const path = require('path')
@@ -27,5 +27,8 @@ router.post('/product/create', requireSignin, adminMiddleware,
 //Nguoi su dung
 //Get danh sach san pham
 router.get('/products/:slug', getProductsBySlug);
+
+//Get chi tiet san pham theo id 
+router.get("/product/:productId", getProductDetailsById);
 
 module.exports = router;

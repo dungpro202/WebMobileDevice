@@ -1,5 +1,23 @@
 const jwt = require("jsonwebtoken");
 
+const shortid = require('shortid');
+const multer = require('multer');
+const path = require('path')
+
+//Cấu hình DiskStorage
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        //path của thư muc cha hien tai + uploads
+        cb(null, path.join(path.dirname(__dirname), 'uploads'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, shortid.generate() + '-' + file.originalname)
+    }
+})
+
+// thu muc luu file upload
+exports.upload = multer({ storage });
+
 
 //token
 //Header

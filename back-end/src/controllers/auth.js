@@ -59,7 +59,7 @@ exports.signin = (req, res) => {
             if (user) {
 
                 //tao token va tzian cua token
-                if (user.authenticate(req.body.password)) {
+                if (user.authenticate(req.body.password)&& user.role === 'user') {
                     //token gom 2 tải trọng là id và role
                     const token = jwt.sign({ _id: user._id, role: user.role  },
                         process.env.JWT_SECRET,
@@ -74,7 +74,7 @@ exports.signin = (req, res) => {
                     })
                 } else {
                     //neu mk ko dung
-                    return res.status(404).json({ message: 'Invalid password' })
+                    return res.status(404).json({ message: 'Only User Can Login' })
                 }
 
             } else {
