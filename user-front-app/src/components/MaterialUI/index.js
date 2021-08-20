@@ -83,7 +83,7 @@ const MaterialButton = (props) => {
     return (
         <div
             style={{
-                width: "100%",
+                width: "90%",
                 ...props.style,
             }}
         >

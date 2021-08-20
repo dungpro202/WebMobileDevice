@@ -25,7 +25,7 @@ const MenuHeader = (props) => {
                 <li key={category.name}>
                     {
                         category.parentId
-                            ? <a href={`${category.slug}?cid=${category._id}&type=${category.type}`}>{category.name}</a>
+                            ? <a href={`/${category.slug}?cid=${category._id}&type=${category.type}`}>{category.name}</a>
                             : <span>{category.name}</span>
                     }
                     {category.children.length > 0

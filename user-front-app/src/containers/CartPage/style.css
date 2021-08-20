@@ -1,0 +1,16 @@
+.cartContainer{
+    display: flex;
+    max-width: 1260px;
+    margin: 15px auto;
+    justify-content: space-between;
+}
+.cartProductContainer{
+    width: 112px;
+    height: 112px;
+    overflow: hidden;
+}
+.cartItemDetails{
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}

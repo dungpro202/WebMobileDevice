@@ -13,6 +13,7 @@ const productRoutes = require('./routes/product')
 const cartRoutes = require('./routes/cart')
 const initialData = require('./routes/admin/initialData')
 const pageRoutes = require('./routes/admin/page')
+const addressRoutes = require('./routes/address')
 
 //bien moi truong
 env.config();
@@ -43,6 +44,7 @@ app.use('/api', productRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', initialData);
 app.use('/api', pageRoutes);
+app.use('/api', addressRoutes);
 
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductDetailsById } from '../../../actions';
+import { addToCart, getProductDetailsById } from '../../../actions';
 import Layout from '../../../components/Layout'
 import { generatePublicUrl } from '../../../urlConfig';
 import './style.css';
@@ -68,6 +68,14 @@ export const ProductDetailsPage = (props) => {
                                     marginRight: '5px'
                                 }}
                                 icon={<IoMdCart />}
+                                onClick={() => {
+                                    const { _id, name, price } = product.productDetails;
+                                    const img = product.productDetails.productImages[0].img;
+                                    dispatch(addToCart({ _id, name, price, img }));
+                                    // Nhay link den /cart
+                                    props.history.push(`/cart`);
+                                    console.log( "props.history", props.history)
+                                  }}
                             />
                             <MaterialButton
                                 title="BUY NOW"
