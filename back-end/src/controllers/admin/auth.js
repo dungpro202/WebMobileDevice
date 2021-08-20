@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 exports.signup = (req, res) => {
     // email ko trung lap => co the tim kim theo email
     User.findOne({ email: req.body.email })
-        .exec( async (err, user) => {
+        .exec(async (err, user) => {
             // da toon tai user
             if (user) {
                 return res.status(400).json({ message: 'Admin already registered' })
@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
                 password,
             } = req.body;
 
-            const hash_password= await bcrypt.hash(password,10);
+            const hash_password = await bcrypt.hash(password, 10);
 
             const _user = new User({
                 firstName,
@@ -32,7 +32,7 @@ exports.signup = (req, res) => {
                 role: 'admin'
             })
 
-          
+
 
             _user.save((error, data) => {
                 if (error) {
@@ -51,14 +51,15 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
     User.findOne({ email: req.body.email })
-        .exec((error, user) => {
+        .exec(async (error, user) => {
             if (error) {
                 return res.status(400).json({ error });
             }
 
             if (user) {
+                const isPassword = await user.authenticate(req.body.password);
                 //tao token va tzian cua token cua admin
-                if (user.authenticate(req.body.password) && user.role === 'admin') {
+                if (isPassword && user.role === 'admin') {
                     //token gom 2 tải trọng là id và role
                     const token = jwt.sign({ _id: user._id, role: user.role },
                         process.env.JWT_SECRET,

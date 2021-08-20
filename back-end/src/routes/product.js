@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireSignin, adminMiddleware } = require('../common-middleware/index');
-const { createProduct, getProductsBySlug, getProductDetailsById } = require('../controllers/product');
+const { createProduct, getProductsBySlug, getProductDetailsById, deleteProductById, getProducts } = require('../controllers/product');
 const shortid = require('shortid');
 const multer = require('multer');
 const path = require('path')
@@ -31,4 +31,10 @@ router.get('/products/:slug', getProductsBySlug);
 //Get chi tiet san pham theo id 
 router.get("/product/:productId", getProductDetailsById);
 
+router.delete("/product/deleteProductById", requireSignin, adminMiddleware, deleteProductById);
+
+router.post("/product/getProducts", requireSignin, adminMiddleware, getProducts);
+
+
 module.exports = router;
+
