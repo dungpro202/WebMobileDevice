@@ -8,6 +8,7 @@ import { isUSerLoggedIn, updateCart } from './actions';
 import { ProductDetailsPage } from './containers/ProductListPage/ProductDetailsPage';
 import CartPage from './containers/CartPage';
 import CheckoutPage from './containers/CheckoutPage.js';
+import OrderPage from './containers/OrderPage';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/" exact component={HomePage} />
                     <Route path="/cart" component={CartPage} />
                     <Route path="/checkout" component={CheckoutPage} />
+                    <Route path="/account/orders" component={OrderPage} />
                     <Route path="/:productSlug/:productId/p" component={ProductDetailsPage} />
                     <Route path="/:slug" component={ProductListPage} />
 
