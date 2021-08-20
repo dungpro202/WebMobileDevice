@@ -6,6 +6,7 @@ import Card from '../../components/UI/Card';
 import CartItem from './CartItem';
 import './style.css';
 import { MaterialButton } from '../../components/MaterialUI';
+import PriceDetails from '../../components/PriceDetails';
 /**
 * @author
 * @function CartPage
@@ -44,6 +45,22 @@ const CartPage = (props) => {
         dispatch(addToCart({ _id, name, price, img }, -1));
     }
 
+    // buoc 3 khi co cartitem
+    if (props.onlyCartItems) {
+        return (
+          <>
+            {Object.keys(cartItems).map((key, index) => (
+              <CartItem
+                key={index}
+                cartItem={cartItems[key]}
+                onQuantityInc={onQuantityIncrement}
+                onQuantityDec={onQuantityDecrement}
+              />
+            ))}
+          </>
+        );
+      }
+
     return (
         <Layout>
             <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
@@ -80,13 +97,16 @@ const CartPage = (props) => {
 
                     </div>
                 </Card>
-                <Card
-                    headerleft='Price'
-                    style={{
-                        width: '380px'
-                    }}>
-
-                </Card>
+                
+                <PriceDetails
+                    totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
+                        return qty + cart.cartItems[key].qty;
+                    }, 0)}
+                    totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                        const { price, qty } = cart.cartItems[key];
+                        return totalPrice + price * qty;
+                    }, 0)}
+                />
             </div>
         </Layout>
     )

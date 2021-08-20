@@ -2,58 +2,54 @@ import { userConstants } from "./constants";
 import axiosInstance from "../helpers/axios";
 
 export const getAddress = () => {
-    return async dispatch => {
-        try{
+    return async (dispatch) => {
+        try {
             const res = await axiosInstance.post(`/user/getaddress`);
             dispatch({ type: userConstants.GET_USER_ADDRESS_REQUEST });
-            if(res.status === 200){
+            if (res.status === 200) {
                 const {
-                    userAddress: {
-                        address
-                    }
+                    userAddress: { address },
                 } = res.data;
                 dispatch({
                     type: userConstants.GET_USER_ADDRESS_SUCCESS,
-                    payload: { address }
+                    payload: { address },
                 });
-            }else{
+            } else {
                 const { error } = res.data;
                 dispatch({
                     type: userConstants.GET_USER_ADDRESS_FAILURE,
-                    payload: { error }
+                    payload: { error },
                 });
             }
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
-    }
-}
+    };
+};
 
 export const addAddress = (payload) => {
-    return async dispatch => {
-        try{
+    return async (dispatch) => {
+        try {
             const res = await axiosInstance.post(`/user/address/create`, { payload });
             dispatch({ type: userConstants.ADD_USER_ADDRESS_REQUEST });
-            if(res.status === 201){
+            if (res.status === 201) {
                 console.log(res);
-                // const {
-                //     userAddress: {
-                //         address
-                //     }
-                // } = res.data;
-                // dispatch({
-                //     type: userConstants.ADD_USER_ADDRESS_SUCCESS,
-                //     payload: { address }
-                // });
-            }else{
+                const {
+                    address: { address },
+                } = res.data;
+                dispatch({
+                    type: userConstants.ADD_USER_ADDRESS_SUCCESS,
+                    payload: { address },
+                });
+            } else {
                 const { error } = res.data;
                 dispatch({
-                    type: userConstants.ADD_USER_ADDRESS_REQUEST,
-                    payload: { error }
+                    type: userConstants.ADD_USER_ADDRESS_FAILURE,
+                    payload: { error },
                 });
             }
-        }catch(error){
+        } catch (error) {
             console.log(error);
         }
-    }
-}
+    };
+};
