@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireSignin, adminMiddleware } = require('../common-middleware/index');
-const { createProduct, getProductsBySlug, getProductDetailsById, deleteProductById, getProducts } = require('../controllers/product');
+const { createProduct, getProductsBySlug, getProductDetailsById, deleteProductById, getProducts, updateProduct } = require('../controllers/product');
 const shortid = require('shortid');
 const multer = require('multer');
 const path = require('path')
@@ -20,9 +20,12 @@ var storage = multer.diskStorage({
 // thu muc luu file upload
 const upload = multer({ storage });
 
-// Tao moi category
+// Tao moi product
 router.post('/product/create', requireSignin, adminMiddleware,
     upload.array('productImage'), createProduct);
+
+router.post('/product/update', requireSignin, adminMiddleware,
+    upload.array('productImage'), updateProduct);
 
 //Nguoi su dung
 //Get danh sach san pham

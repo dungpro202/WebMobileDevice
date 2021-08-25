@@ -5,7 +5,7 @@ const shortid = require('shortid');
 const Category = require('../models/category');
 
 
-//Them moi 1 danh muc
+//Them moi 1 san pham
 exports.createProduct = (req, res, next) => {
 
     //res.status(200).json({ files: req.files, body: req.body });
@@ -39,6 +39,30 @@ exports.createProduct = (req, res, next) => {
             res.status(201).json({ product });
         }
     })
+
+}
+
+exports.updateProduct = (req, res) => {
+    
+    const { name, price, description, category, quantity } = req.body;
+    let productImages = [];
+    if (req.files.length > 0) {
+        productImages = req.files.map(file => {
+            return { img: file.filename };
+        });
+    }
+    
+    req.body.slug = slug_vietnamese(name);
+    req.body.productImages=req.body.productImages;
+
+    Product.findOneAndUpdate({ product: req.body.product }, req.body).exec(
+        (error, updatedProduct) => {
+            if (error) return res.status(400).json({ error });
+            if (updatedProduct) {
+                return res.status(201).json({ product: updatedProduct });
+            }
+        }
+    );
 
 }
 

@@ -1,20 +1,15 @@
-import { productConstants } from "../actions/constants"
+import { productConstants } from "../actions/constants";
 
 const initState = {
     products: [],
-    productsByPrice: {
-        under5k: [],
-        under10k: [],
-        under15k: [],
-        under20k: [],
-        under30k: [],
-    },
+    priceRange: {},
+    productsByPrice: {},
     pageRequest: false,
     page: {},
     error: null,
     productDetails: {},
-    loading: false
-}
+    loading: false,
+};
 
 const productReducer = (state = initState, action) => {
     switch (action.type) {
@@ -22,30 +17,31 @@ const productReducer = (state = initState, action) => {
             state = {
                 ...state,
                 products: action.payload.products,
+                priceRange: action.payload.priceRange,
                 productsByPrice: {
-                    ...action.payload.productsByPrice
-                }
-            }
+                    ...action.payload.productsByPrice,
+                },
+            };
             break;
         case productConstants.GET_PRODUCT_PAGE_REQUEST:
             state = {
                 ...state,
-                pageRequest: true
-            }
+                pageRequest: true,
+            };
             break;
         case productConstants.GET_PRODUCT_PAGE_SUCCESS:
             state = {
                 ...state,
                 page: action.payload.page,
-                pageRequest: false
-            }
+                pageRequest: false,
+            };
             break;
         case productConstants.GET_PRODUCT_PAGE_FAILURE:
             state = {
                 ...state,
                 pageRequest: false,
-                error: action.payload.error
-            }
+                error: action.payload.error,
+            };
             break;
         case productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST:
             state = {
@@ -70,7 +66,8 @@ const productReducer = (state = initState, action) => {
         default:
             break;
     }
+
     return state;
-}
+};
 
 export default productReducer

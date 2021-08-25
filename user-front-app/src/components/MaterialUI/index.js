@@ -37,7 +37,7 @@ const MaterialInput = (props) => {
                     lineHeight: "none",
                 }}
             >
-                {props.label && `Enter ${props.label}`}
+                {props.label && ` ${props.label}`}
             </label>
             <div
                 style={{

@@ -1,6 +1,32 @@
 import axiosInstance from "../helpers/axios";
 import { authConstants, cartConstants } from "./constants";
 
+export const signup = (user) => {
+    return async (dispatch) => {
+      try {
+        dispatch({ type: authConstants.SIGNUP_REQUEST });
+        const res = await axiosInstance.post(`/signup`, user);
+        if (res.status === 201) {
+          dispatch({ type: authConstants.SIGNUP_SUCCESS });
+          const { token, user } = res.data;
+          localStorage.setItem("token", token);
+          localStorage.setItem("user", JSON.stringify(user));
+          dispatch({
+            type: authConstants.LOGIN_SUCCESS,
+            payload: {
+              token,
+              user,
+            },
+          });
+        } else {
+          dispatch({ type: authConstants.SIGNUP_FAILURE });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
+
 export const login = (user) => {
     console.log('action login', user)
     return async (dispatch) => {

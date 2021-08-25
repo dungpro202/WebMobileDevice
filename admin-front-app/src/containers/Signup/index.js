@@ -1,31 +1,37 @@
-import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { signup } from '../../actions';
-import Layout from '../../components/Layout';
-import Input from '../../components/UI/Input';
+import React, { useState } from "react";
+import Layout from "../../components/Layout";
+import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import Input from "../../components/UI/Input";
+import { Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signup } from "../../actions";
+import { useEffect } from "react";
 
 /**
-* @author
-* @function Signup
-**/
+ * @author
+ * @function Signup
+ **/
 
 const Signup = (props) => {
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-
-    const auth = useSelector(state => state.auth);
-    const user = useSelector(state => state.user);
-
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const auth = useSelector((state) => state.auth);
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
-    const userSignup = (e) => {
+    useEffect(() => {
+        if (!user.loading) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+        }
+    }, [user.loading]);
 
+    const userSignup = (e) => {
         e.preventDefault();
 
         const user = {
@@ -34,23 +40,23 @@ const Signup = (props) => {
             email,
             password,
         };
+
         dispatch(signup(user));
-    }
+    };
 
     if (auth.authenticate) {
-        return <Redirect to={`/`} />
+        return <Redirect to={`/`} />;
     }
 
     if (user.loading) {
-        return <p>Loading......!</p>
+        return <p>Loading...!</p>;
     }
-
 
     return (
         <Layout>
             <Container>
                 {user.message}
-                <Row style={{ marginTop: '50px' }}>
+                <Row style={{ marginTop: "50px" }}>
                     <Col md={{ span: 6, offset: 3 }}>
                         <Form onSubmit={userSignup}>
                             <Row>
@@ -89,7 +95,6 @@ const Signup = (props) => {
                                 type="password"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
@@ -98,8 +103,7 @@ const Signup = (props) => {
                 </Row>
             </Container>
         </Layout>
-    )
+    );
+};
 
-}
-
-export default Signup
+export default Signup;

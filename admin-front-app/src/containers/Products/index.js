@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Modal, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProducts } from '../../actions'
+import { addProduct, deleteProductById, updateProduct } from '../../actions'
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import NewModal from '../../components/UI/NewModal'
@@ -26,6 +26,10 @@ const Products = (props) => {
     const [show, setShow] = useState(false);
     const [productDetailModal, setProductDetailModal] = useState(false);
     const [productDetails, setProductDetails] = useState(null);
+    const [productItem, setProductItem] = useState(null);
+
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+
 
     const category = useSelector(state => state.category);
     const product = useSelector(state => state.product);
@@ -44,11 +48,42 @@ const Products = (props) => {
             form.append('productImage', image);
         }
 
-        dispatch(addProducts(form));
+        dispatch(addProduct(form));
 
         setShow(false)
     }
     const handleShow = () => setShow(true);
+
+    //update
+    const closeUpdateProductForm=()=>{
+        setShowUpdateModal(false);
+    }
+    const onUpdateProduct =(product) => {
+        console.log(product);
+        setShowUpdateModal(true);
+        setProductItem(product)
+        renderUpdateProductModal();
+        console.log(showUpdateModal);
+    }
+
+    const updateProductForm = () => {
+
+        const form = new FormData();
+
+        form.append('name', name);
+        form.append('quantity', quantity);
+        form.append('price', price);
+        form.append('description', description);
+        form.append('category', categoryId);
+
+        for (let image of productImages) {
+            form.append('productImage', image);
+        }
+
+        dispatch(updateProduct(form));
+
+        setShow(false)
+    }
 
     // tao category lít
     const createCategoryList = (categories, options = []) => {
@@ -81,19 +116,42 @@ const Products = (props) => {
                         <th>Số Lượng</th>
                         <th>Mô Tả</th>
                         <th>Danh Mục</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         product.products.length > 0 ?
                             product.products.map((product, index) =>
-                                <tr onClick={() => showProductDetailsModal(product)} key={product._id}>
+                                // <tr onClick={() => showProductDetailsModal(product)} key={product._id}>
+                                <tr  key={product._id}>
                                     <td>{index + 1}</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.quantity}</td>
                                     <td>{product.description}</td>
                                     <td>{product.category.name}</td>
+                                    <td style={{display: 'flex'}}>
+                                        <Button variant="primary" onClick={() => showProductDetailsModal(product)}>
+                                            info
+                                        </Button>
+                                        <div style={{marginRight:"10px"}}></div>
+                                        <Button variant="primary" onClick={() => onUpdateProduct(product)}>
+                                            Update
+                                        </Button>
+                                        <Button
+                                         variant="primary"
+                                            onClick={() => {
+                                                const payload = {
+                                                    productId: product._id,
+                                                };
+                                                dispatch(deleteProductById(payload));
+                                            }}
+                                        >
+                                            del
+                                        </Button>
+                                        
+                                    </td>
                                 </tr>
                             )
                             : null
@@ -146,6 +204,61 @@ const Products = (props) => {
 
                 {
                     productImages.length > 0
+                        ? productImages.map((image, index) => <div key={index}>{image.name}</div>)
+                        : null
+                }
+
+                <input type='file' name='productImage' onChange={handleProductImages} />
+            </NewModal>
+        )
+    }
+
+    const renderUpdateProductModal = () => {
+        if (!productItem) {
+            console.log('aaaaa')
+            return null;
+        }
+        console.log("product",productItem)
+        return (
+            <NewModal
+                show={showUpdateModal}
+                handleClose={closeUpdateProductForm}
+                modalTitle={'Update Sản Phẩm'}
+                handleSave={updateProductForm}
+            >
+                <Input
+                    value={productItem.name}
+                    placeholder={'Tên Sản Phẩm'}
+                    onChange={(e) => { setName(e.target.value) }}
+                />
+                <Input
+                    value={productItem.quantity}
+                    placeholder={'Số lượng'}
+                    onChange={(e) => { setQuantity(e.target.value) }}
+                />
+                <Input
+                    value={productItem.price}
+                    placeholder={'Giá'}
+                    onChange={(e) => { setPrice(e.target.value) }}
+                />
+                <Input
+                    value={productItem.description}
+                    placeholder={'Description'}
+                    onChange={(e) => { setDescription(e.target.value) }}
+                />
+                <select
+                    className="form-control"
+                    value={productItem.categoryId}
+                    onChange={(e) => setCategoryId(e.target.value)}
+                >
+                    <option>{productItem.category.name}</option>
+                    {createCategoryList(category.categories).map(option =>
+                        <option key={option.value} value={option.value}>{option.name}</option>
+                    )}
+                </select>
+
+                {
+                    productItem.productImages && productItem.productImages.length > 0
                         ? productImages.map((image, index) => <div key={index}>{image.name}</div>)
                         : null
                 }
@@ -243,6 +356,8 @@ const Products = (props) => {
 
             {/* Model Product Details */}
             {renderProductDetailsModal()}
+
+            {renderUpdateProductModal()}
 
         </Layout>
     )
