@@ -8,6 +8,7 @@ exports.updateOrder = (req, res) => {
         "orderStatus.$": [
           { type: req.body.type, date: new Date(), isCompleted: true },
         ],
+        "paymentStatus":req.body.type,
       },
     }
   ).exec((error, order) => {

@@ -68,18 +68,11 @@ const Header = (props) => {
                 menu={<a className="fullName">{auth.user.fullName}</a>}
                 menus={[
                     { label: "My Profile", href: "", icon: null },
-                    { label: "SuperCoin Zone", href: "", icon: null },
-                    { label: "1111", href: "", icon: null },
                     {
                         label: "Orders",
                         href: `/account/orders`,
                         icon: null,
                     },
-                    { label: "Wishlist", href: "", icon: null },
-                    { label: "My Chats", href: "", icon: null },
-                    { label: "Coupons", href: "", icon: null },
-                    { label: "Rewards", href: "", icon: null },
-                    { label: "Notifications", href: "", icon: null },
                     { label: "Gift Cards", href: "", icon: null },
                     { label: "Logout", href: "", icon: null, onClick: logout },
                 ]}
@@ -119,7 +112,7 @@ const Header = (props) => {
                 firstMenu={
                     <div className="firstmenu">
                         <span>New Customer?</span>
-                        <a
+                        <button
                             onClick={() => {
                                 setLoginModal(true);
                                 setSignup(true);
@@ -127,7 +120,7 @@ const Header = (props) => {
                             style={{ color: "#2874f0", cursor:"pointer" }}
                         >
                             Sign Up
-                        </a>
+                        </button>
                     </div>
                 }
             />

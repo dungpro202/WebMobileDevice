@@ -50,6 +50,7 @@ const OrderPage = (props) => {
                     src={generatePublicUrl(
                       item.productId.productImages[0].img
                     )}
+                    alt="aa"
                   />
                 </div>
                 <div className="orderRow">

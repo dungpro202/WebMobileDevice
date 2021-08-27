@@ -1,6 +1,7 @@
 const Category = require('../../models/category');
 const Order = require('../../models/order');
 const Product = require('../../models/product');
+const User = require('../../models/user');
 
 
 // tra ve danh sach long nhau
@@ -44,12 +45,18 @@ exports.initialData = async (req, res) => {
         .exec();
     const orders = await Order.find({})
         .populate("items.productId", "name")
+        .populate("user","_id firstName lastName")
+        .exec();
+
+    const accounts = await User.find({role:"user"})
         .exec();
 
     res.status(200).json({
         categories: createCategories(categories),
         products,
         orders,
+        accounts,
+
     })
 
 }

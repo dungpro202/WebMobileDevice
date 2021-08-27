@@ -11,6 +11,7 @@ import Products from './containers/Products';
 import Orders from './containers/Orders';
 import Category from './containers/Category';
 import NewPage from './containers/NewPage';
+import { Account } from './containers/Account';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
     <div className="App">
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
+        <PrivateRoute path="/account" exact component={Account} />
         <PrivateRoute path="/page" exact component={NewPage} />
         <PrivateRoute path="/category" exact component={Category} />
         <PrivateRoute path="/products" exact component={Products} />

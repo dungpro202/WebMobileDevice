@@ -40,18 +40,12 @@ const Orders = (props) => {
             margin: "10px 0",
           }}
           key={index}
-          headerLeft={orderItem._id}
+          headerLeft={`Mã đơn hàng: ${orderItem._id}`}
+          headerRight={`Khách Hàng: ${orderItem.user.firstName} ${orderItem.user.lastName}`}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "50px 50px",
-              alignItems: "center",
-            }}
-          >
+          <div className="orderTop">
             <div>
-              <div className="title">Items</div>
+              <div className="title">Danh Sách Sản Phẩm</div>
               {orderItem.items.map((item, index) => (
                 <div className="value" key={index}>
                   {item.productId.name}
@@ -59,33 +53,28 @@ const Orders = (props) => {
               ))}
             </div>
             <div>
-              <span className="title">Total Price</span>
+              <span className="title">Tổng Tiền</span>
               <br />
               <span className="value">{orderItem.totalAmount}</span>
             </div>
             <div>
-              <span className="title">Payment Type</span> <br />
+              <span className="title">Hình Thức Thanh Toán</span> <br />
               <span className="value">{orderItem.paymentType}</span>
             </div>
             <div>
-              <span className="title">Payment Status</span> <br />
+              <span className="title">Trạng Thái</span> <br />
               <span className="value">{orderItem.paymentStatus}</span>
             </div>
           </div>
+
           <div
-            style={{
-              boxSizing: "border-box",
-              padding: "100px",
-              display: "flex",
-              alignItems: "center",
-            }}
+            className="orderBottom"
           >
             <div className="orderTrack">
               {orderItem.orderStatus.map((status) => (
                 <div
-                  className={`orderStatus ${
-                    status.isCompleted ? "active" : ""
-                  }`}
+                  className={`orderStatus ${status.isCompleted ? "active" : ""
+                    }`}
                 >
                   <div
                     className={`point ${status.isCompleted ? "active" : ""}`}
@@ -97,27 +86,6 @@ const Orders = (props) => {
                 </div>
               ))}
 
-              {/* <div className="orderStatus">
-                <div className="point"></div>
-                <div className="orderInfo">
-                  <div className="status">Packed</div>
-                  <div className="date">Fri, 2020</div>
-                </div>
-              </div>
-              <div className="orderStatus">
-                <div className="point"></div>
-                <div className="orderInfo">
-                  <div className="status">Shipped</div>
-                  <div className="date">Fri, 2020</div>
-                </div>
-              </div>
-              <div className="orderStatus">
-                <div className="point"></div>
-                <div className="orderInfo">
-                  <div className="status">Delivered</div>
-                  <div className="date">Fri, 2020</div>
-                </div>
-              </div> */}
             </div>
 
             {/* select input to apply order action */}
@@ -150,8 +118,8 @@ const Orders = (props) => {
                 boxSizing: "border-box",
               }}
             >
-              <button onClick={() => onOrderUpdate(orderItem._id)}>
-                confirm
+              <button className="btn btn-primary" onClick={() => onOrderUpdate(orderItem._id)}>
+                Xác Nhận
               </button>
             </div>
           </div>

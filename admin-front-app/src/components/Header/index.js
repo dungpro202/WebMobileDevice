@@ -3,7 +3,8 @@ import React from 'react'
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
-import {signout} from './../../actions'
+import { signout } from './../../actions'
+import './style.css'
 
 /**
 * @author
@@ -47,15 +48,18 @@ const Header = (props) => {
 
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ zIndex: 1 }}>
+    <Navbar collapseOnSelect expand="lg" bg="danger" variant="danger" style={{ zIndex: 1, position: "fixed", top: 0, left: 0, right: 0, marginBottom: "100px"}}>
       <Container fluid>
-        <Link to="/" className="navbar-brand" >Admin Dashboard</Link>
+        <Link to="/" className="navbar-brand" style={{color: "white"}} >Admin Dashboard</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#nav1">nav1</Nav.Link>
-            <Nav.Link href="#nav2">nav2</Nav.Link>
-            
+            <Nav><NavLink className="navcustom"  to={`/`} exact >Home</NavLink></Nav>
+            <Nav><NavLink to={`/account`} exact >Account</NavLink></Nav>
+            <Nav><NavLink to={`/page`} exact >Page</NavLink></Nav>
+            <Nav><NavLink to={`/category`}>Category</NavLink></Nav>
+            <Nav><NavLink to={`/products`}>Products</NavLink></Nav>
+            <Nav><NavLink to={`/orders`}>Orders</NavLink></Nav>
           </Nav>
           {auth.authenticate ? renderLoggerLinks() : renderNonLoggerLinks()}
         </Navbar.Collapse>

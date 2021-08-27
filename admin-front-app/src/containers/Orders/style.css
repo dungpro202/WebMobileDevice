@@ -1,3 +1,18 @@
+
+.orderTop{
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 50px;
+    align-items: center;
+}
+
+.orderBottom{
+        box-sizing: border-box;
+        padding: 50px 0 150px 50px;
+        display: flex;
+        align-items: center;
+}
+
 .orderTrack{
     width: 500px;
     display: flex;
@@ -28,6 +43,7 @@
 }
 .orderInfo{
     height: 60px;
+    width: 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -37,10 +53,12 @@
 }
 
 .title{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
+    color:red;
 }
 .value{
-    font-size: 12px;
+    font-size: 14px;
     text-transform: capitalize;
+    color:rgb(72, 75, 199);
 }

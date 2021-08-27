@@ -4,6 +4,7 @@ import categoryReducer from "./category.reducer";
 import productReducer from "./product.reducer";
 import pageReducer from "./page.reducer";
 import orderReducer from "./order.reducer";
+import accountReducer from "./account.reducer";
 import { combineReducers } from "redux";
 
 const rootReducer =  combineReducers({
@@ -13,6 +14,7 @@ const rootReducer =  combineReducers({
     category: categoryReducer,
     page: pageReducer,
     order: orderReducer,
+    account: accountReducer,
 })
 
 export default rootReducer;

@@ -17,17 +17,18 @@ const Layout = (props) => {
         props.sidebar
           ?
           <Container fluid>
-            <Row>
+            <Row  >
               <Col md={2} className="sidebar">
                 <ul>
                   <li><NavLink to={`/`} exact >Home</NavLink></li>
+                  <li><NavLink to={`/account`} exact >Account</NavLink></li>
                   <li><NavLink to={`/page`} exact >Page</NavLink></li>
                   <li><NavLink to={`/category`}>Category</NavLink></li>
                   <li><NavLink to={`/products`}>Products</NavLink></li>
                   <li><NavLink to={`/orders`}>Orders</NavLink></li>
                 </ul>
               </Col>
-              <Col md={10} style={{ marginLeft: 'auto', paddingTop:'60px' }}>
+              <Col md={10} style={{ marginLeft: 'auto', paddingTop:'100px' }}>
                 {props.children}
               </Col>
             </Row>

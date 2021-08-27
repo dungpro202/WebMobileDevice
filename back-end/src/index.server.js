@@ -16,6 +16,7 @@ const pageRoutes = require('./routes/admin/page')
 const addressRoutes = require('./routes/address')
 const orderRoutes = require("./routes/order");
 const orderadminRoutes = require("./routes/admin/order.routes");
+const accountRoutes = require("./routes/admin/account.routes");
 
 //bien moi truong
 env.config();
@@ -49,6 +50,7 @@ app.use('/api', pageRoutes);
 app.use('/api', addressRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", orderadminRoutes);
+app.use("/api", accountRoutes);
 
 
 
