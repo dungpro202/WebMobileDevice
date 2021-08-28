@@ -1,0 +1,44 @@
+.order{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.orderId{
+    color:green;
+    width: 47%;
+    font-size: 16px;
+}
+
+.orderTotal{
+    color:green;
+    width: 20%;
+    font-size: 16px;
+}
+
+.orderPaymentStatus{
+    color:green;
+    width: 30%;
+    font-size: 16px;
+}
+
+
+
+.orderDetails{
+    font-size: 16px;
+    padding-left: 25px;
+    display:flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.itemName{
+    width: 50%;
+}
+
+.itemQty{
+    width: 10%;
+}
+
+.itemPrice{
+    width: 25%;
+}

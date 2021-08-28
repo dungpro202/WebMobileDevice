@@ -25,9 +25,13 @@ const NewModal = (props) => {
                         <Button Button variant="secondary" onClick={props.handleClose}>
                             Thoát
                         </Button>
-                        <Button variant="primary" onClick={props.handleSave}>
-                            Lưu
-                        </Button>
+                        {
+                            props.handleSave ?
+                                <Button variant="primary" onClick={props.handleSave}>
+                                    Lưu
+                                </Button>
+                                : null
+                        }
                     </>
                 }
 

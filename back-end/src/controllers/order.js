@@ -38,6 +38,7 @@ exports.addOrder = (req, res) => {
   };
 
 exports.getOrders = (req, res) => {
+  console.log('req', req)
     Order.find({ user: req.user._id })
         .select("_id paymentStatus items")
         .populate("items.productId", "_id name productImages")

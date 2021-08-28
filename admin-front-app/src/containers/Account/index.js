@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { createAccountUser } from '../../actions';
+import { createAccountUser, getOrdersByAccountId } from '../../actions';
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input';
 import NewModal from '../../components/UI/NewModal';
+import './style.css'
 
 /**
 * @author
@@ -20,6 +21,9 @@ export const Account = (props) => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [orderByAccount, setOrderByAccount] = useState([])
+    const [showOrderByAccount, setShowOrderByAccount] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -41,7 +45,64 @@ export const Account = (props) => {
     }
     const handleShowCreate = () => setShowCreateModel(true);
 
-    
+    const showOrdersByAccountId = (accountId) => {
+        setShowOrderByAccount(true)
+        const payload = {
+            params: {
+                accountId,
+            },
+        };
+        dispatch(getOrdersByAccountId(payload))
+            .then(response => {
+                console.log('response', response)
+                setOrderByAccount(response)
+            })
+    }
+
+    const renderOrdersByAccountId = (orderByAccount) => {
+        return (
+            <>
+                {
+                    orderByAccount ?
+                        <NewModal
+                            show={showOrderByAccount}
+                            handleClose={() => setShowOrderByAccount(false)}
+                            modalTitle={'Danh Sách Đơn Hàng'}
+                            size='lg'
+                        >
+                            <h3 > {`Tổng số đơn hàng : ${orderByAccount.length}`}</h3>
+                            {orderByAccount.map((order, index) => {
+                                return <div key={order._id} className="order">
+                                    <div className="orderId">Mã đơn hàng: {order._id}</div>
+                                    <div className="orderTotal"> Giá Trị :
+                                        {
+                                            order.items.reduce((temp, item) =>
+                                                temp + item.payablePrice * item.purchasedQty
+                                                , 0)
+                                        }
+                                    </div>
+                                    <div className="orderPaymentStatus">Trạng Thái: {order.paymentStatus}</div>
+                                    {
+                                        order.items.map((item, index) => {
+                                            return (
+                                                <div className="orderDetails" key={index}>
+                                                    <div className="itemStt" >{index+1}.</div>
+                                                    <div className="itemName" >{item.productId.name}  </div>
+                                                    <div className="itemQty">SL: {item.purchasedQty}</div>
+                                                    <div className="itemPrice">Giá Tiền: {item.payablePrice}</div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            })}
+                        </NewModal >
+                        : null
+
+                }
+            </>
+        )
+    }
 
 
 
@@ -55,9 +116,7 @@ export const Account = (props) => {
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Full Name</th>
-                        <th>Số lượng đơn hàng</th>
-                        <th>Xem đơn hàng</th>
-                        <th>Chỉnh Sửa</th>
+                        <th>Xem đơn hàng đã đặt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,21 +129,15 @@ export const Account = (props) => {
                                     <td>{account.firstName}</td>
                                     <td>{account.lastName}</td>
                                     <td>{account.firstName} {account.lastName}</td>
-                                    <td>----</td>
                                     <td>
-                                        <Button variant="primary">
-                                            Xem
-                                        </Button>
-                                    </td>
-                                    <td>
-                                        <Button 
-                                        variant="primary"
-                                        onClick={()=>{}}
+                                        <Button
+                                            variant="primary"
+                                            onClick={() => showOrdersByAccountId(account._id)}
                                         >
-
-                                            Update
+                                            Xem đơn hàng
                                         </Button>
                                     </td>
+                                    
                                 </tr>
                             ) : null
                     }
@@ -182,9 +235,11 @@ export const Account = (props) => {
                 </Row>
             </Container>
 
-        {renderCreateAccountUser()}
+            {renderCreateAccountUser()}
 
-        {renderUpdateAccountUser()}
+            {renderUpdateAccountUser()}
+
+            {renderOrdersByAccountId(orderByAccount)}
 
         </Layout>
     )
