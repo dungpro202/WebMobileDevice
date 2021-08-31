@@ -12,6 +12,7 @@ exports.createProduct = (req, res, next) => {
 
     // viet tat   vd:  name= req.body.name
     const { name, price, description, category, quantity } = req.body;
+    console.log('sss', name)
 
     let productImages = [];
 
@@ -42,31 +43,71 @@ exports.createProduct = (req, res, next) => {
 
 }
 
+// exports.updateProduct = (req, res) => {
+
+//     console.log('body', req)
+
+//     const { _id, name, price, description, category, quantity } = req.body;
+//     console.log('sss', name);
+//     // req.body.slug = slug_vietnamese(name);
+
+//     // Product.findOneAndUpdate(
+//     //     { product: req.body._id },
+//     //       {
+//     //         $set: {
+//     //           "name": name,
+//     //           "price": price,
+//     //           "description":description,
+//     //           "category":category,
+//     //           "quantity":quantity,
+//     //         //   "slug":req.body.slug,
+//     //         },
+//     //       }
+//     // ).exec(
+//     //     (error, updatedProduct) => {
+//     //         if (error) return res.status(400).json({ error });
+//     //         if (updatedProduct) {
+//     //             return res.status(200).json({ product: updatedProduct });
+//     //         }
+//     //     }
+//     // );
+//     return res.status(200).json({ qq: "chua" })
+// }
+
 exports.updateProduct = (req, res) => {
-    
-    const { name, price, description, category, quantity } = req.body;
-    let productImages = [];
-    if (req.files.length > 0) {
-        productImages = req.files.map(file => {
-            return { img: file.filename };
-        });
-    }
-    
+
+    console.log('body', req)
+
+    const { _id, name, price, description, category, quantity } = req.body;
+    console.log('sss', name);
     req.body.slug = slug_vietnamese(name);
-    req.body.productImages=req.body.productImages;
 
-    Product.findOneAndUpdate({ product: req.body.product }, req.body).exec(
-        (error, updatedProduct) => {
-            if (error) return res.status(400).json({ error });
-            if (updatedProduct) {
-                return res.status(201).json({ product: updatedProduct });
-            }
+    Product.findOneAndUpdate(
+        { _id: _id },
+        {
+            _id: _id,
+            name: name,
+            price: price,
+            description: description,
+            category: category,
+            quantity: quantity,
+            slug: req.body.slug,
+        },
+        {
+            new: true
         }
-    );
-
+    ).exec(
+            (error, product) => {
+                if (error) return res.status(400).json({ error });
+                if (product) {
+                    return res.status(200).json({ product: product });
+                }
+            }
+        );
 }
 
-//Get danh sach san pham them slug
+
+//Get danh sach san pham them slug category
 exports.getProductsBySlug = (req, res) => {
     const { slug } = req.params;
     Category.findOne({ slug: slug })

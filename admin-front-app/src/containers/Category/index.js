@@ -12,6 +12,9 @@ import UpdateCategoriesModal from './components/UpdateCategoryModal';
 import AddCategoryModal from './components/AddCategoryModal';
 import './style.css';
 import DeleteCategoryModal from './components/DeleteCategoryModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 /**
 * @author
@@ -38,10 +41,16 @@ const Category = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if(!category.loading){
+        if (!category.loading) {
             setShow(false);
         }
-    },[category.loading])
+    }, [category.loading])
+
+    useEffect(() => {
+        if (category.notification) {
+            toast(category.notification);
+        }
+    }, [category.notification])
 
     // handel action Add Model
     const handleShow = () => setShow(true);
@@ -179,12 +188,16 @@ const Category = (props) => {
         const checkedIdsArray = checkedArray.map(((item, index) => ({ _id: item.value })))
         if (checkedIdsArray.length > 0) {
             dispatch(deleteCategoriesAction(checkedIdsArray))
+            // .onLoad((e) => console.log(e))
+
 
         }
         setDeleteCategoryModal(false);
     }
 
     const categoryList = createCategoryList(category.categories);
+
+    // const notify = () => toast("Wow so easy!");
 
     return (
         <Layout sidebar>
@@ -274,6 +287,8 @@ const Category = (props) => {
                 expandedArray={expandedArray}
                 checkedArray={checkedArray}
             />
+            {/* <button onClick={notify}>Notify!</button> */}
+            <ToastContainer />
 
         </Layout>
     )

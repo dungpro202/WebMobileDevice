@@ -8,7 +8,7 @@ const DeleteCategoryModal = (props) => {
         modalTitle,
         size,
         deleteCategories,
-        expandedArray,
+        // expandedArray,
         checkedArray,
     } = props;
 
@@ -37,9 +37,9 @@ const DeleteCategoryModal = (props) => {
 
             ]}
         >
-            <h5>Expanded</h5>
-            {expandedArray.map((item, index) => <h6 key={index}>{item.name}</h6>)}
-            <h5>Checked</h5>
+            {/* <h5>Expanded</h5>
+            {expandedArray.map((item, index) => <h6 key={index}>{item.name}</h6>)} */}
+            <h5>Lựa chọn</h5>
             {checkedArray.map((item, index) => <h6 key={index}>{item.name}</h6>)}
 
 

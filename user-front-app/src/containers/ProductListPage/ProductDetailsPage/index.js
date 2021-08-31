@@ -95,8 +95,6 @@ export const ProductDetailsPage = (props) => {
                     <div className="breed">
                         <ul>
                             <li><a href="#">Home</a><IoIosArrowForward /></li>
-                            <li><a href="#">Mobiles</a><IoIosArrowForward /></li>
-                            <li><a href="#">Samsung</a><IoIosArrowForward /></li>
                             <li><a href="#">{product.productDetails.name}</a></li>
                         </ul>
                     </div>
@@ -104,13 +102,13 @@ export const ProductDetailsPage = (props) => {
                     <div className="productDetails">
                         <p className="productTitle">{product.productDetails.name}</p>
                         <div>
-                            <span className="ratingCount">4.3 <IoIosStar /></span>
-                            <span className="ratingNumbersReviews">72,234 Ratings & 8,140 Reviews</span>
+                            <span className="ratingCount">5.0 <IoIosStar /></span>
+                            <span className="ratingNumbersReviews">9,999 Ratings</span>
                         </div>
-                        <div className="extraOffer">Extra <BiRupee />4500 off </div>
+                        {/* <div className="extraOffer">Extra <BiRupee />4500 off </div> */}
                         <div className="flexRow priceContainer">
-                            <span className="price"><BiRupee />{product.productDetails.price}</span>
-                            <span className="discount" style={{ margin: '0 10px' }}>22% off</span>
+                            <span className="price">$ {product.productDetails.price}</span>
+                            <span className="discount" style={{ margin: '0 10px' }}>0% off</span>
                             {/* <span>i</span> */}
                         </div>
                         <div>
@@ -118,7 +116,7 @@ export const ProductDetailsPage = (props) => {
                                 color: '#212121',
                                 fontSize: '14px',
                                 fontWeight: '600'
-                            }}>Available Offers</p>
+                            }}>Ưu đãi: 0%</p>
                             <p style={{ display: 'flex' }}>
                                 <span style={{
                                     width: '100px',

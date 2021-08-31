@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Modal, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { addProduct, deleteProductById, updateProduct } from '../../actions'
@@ -7,6 +7,8 @@ import Input from '../../components/UI/Input'
 import NewModal from '../../components/UI/NewModal'
 import { generatePublicUrl } from '../../urlConfig'
 import './style.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
 * @author
@@ -35,6 +37,10 @@ const Products = (props) => {
     const product = useSelector(state => state.product);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        toast(product.notification);
+    }, [product.notification])
+
     const handleClose = () => setShow(false);
     const handleSave = () => {
         const form = new FormData();
@@ -48,41 +54,47 @@ const Products = (props) => {
             form.append('productImage', image);
         }
 
+        console.log({ form })
         dispatch(addProduct(form));
+
+        setName(''); setQuantity(''); setPrice(''); setDescription('');
+        setCategoryId(''); setProductImages('');
 
         setShow(false)
     }
     const handleShow = () => setShow(true);
 
     //update
-    const closeUpdateProductForm=()=>{
+    const closeUpdateProductForm = () => {
         setShowUpdateModal(false);
     }
-    const onUpdateProduct =(product) => {
-        console.log(product);
+    const onUpdateProduct = (product) => {
         setShowUpdateModal(true);
         setProductItem(product)
         renderUpdateProductModal();
-        console.log(showUpdateModal);
     }
 
     const updateProductForm = () => {
 
-        const form = new FormData();
-
-        form.append('name', name);
-        form.append('quantity', quantity);
-        form.append('price', price);
-        form.append('description', description);
-        form.append('category', categoryId);
-
-        for (let image of productImages) {
-            form.append('productImage', image);
+        let _id = productItem._id;
+        let name = productItem.name;
+        let quantity = productItem.quantity;
+        let price = productItem.price;
+        let description = productItem.description;
+        // let category = productItem.category.id;
+        let category = productItem.category ? productItem.category.id : 123456789;
+        const payload = {
+            _id,
+            name,
+            quantity,
+            price,
+            description,
+            category,
         }
 
-        dispatch(updateProduct(form));
+        dispatch(updateProduct(payload));
 
-        setShow(false)
+        setShowUpdateModal(false);
     }
 
     // tao category lít
@@ -105,6 +117,8 @@ const Products = (props) => {
         ]);
     }
 
+
+
     const renderProducts = () => {
         return (
             <Table style={{ fontSize: '12px' }} responsive="sm" striped bordered hover>
@@ -114,7 +128,6 @@ const Products = (props) => {
                         <th>Tên Sản Phẩm</th>
                         <th>Giá</th>
                         <th>Số Lượng</th>
-                        <th>Mô Tả</th>
                         <th>Danh Mục</th>
                         <th>Action</th>
                     </tr>
@@ -123,24 +136,27 @@ const Products = (props) => {
                     {
                         product.products.length > 0 ?
                             product.products.map((product, index) =>
-                                // <tr onClick={() => showProductDetailsModal(product)} key={product._id}>
-                                <tr  key={product._id}>
+                                <tr key={product._id}>
                                     <td>{index + 1}</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.quantity}</td>
-                                    <td>{product.description}</td>
-                                    <td>{product.category.name}</td>
-                                    <td style={{display: 'flex'}}>
+
+                                    <td>{
+                                        product.category &&
+                                            product.category.name ?
+                                            product.category.name : <span style={{ color: 'red' }}>Danh Mục Đã Bị Xóa</span>}</td>
+                                    <td style={{ display: 'flex' }}>
                                         <Button variant="primary" onClick={() => showProductDetailsModal(product)}>
-                                            info
+                                            Details
                                         </Button>
-                                        <div style={{marginRight:"10px"}}></div>
-                                        <Button variant="primary" onClick={() => onUpdateProduct(product)}>
+                                        <div style={{ marginRight: "10px" }}></div>
+                                        <Button variant="success" onClick={() => onUpdateProduct(product)}>
                                             Update
                                         </Button>
+                                        <div style={{ marginRight: "10px" }}></div>
                                         <Button
-                                         variant="primary"
+                                            variant="danger"
                                             onClick={() => {
                                                 const payload = {
                                                     productId: product._id,
@@ -148,16 +164,14 @@ const Products = (props) => {
                                                 dispatch(deleteProductById(payload));
                                             }}
                                         >
-                                            del
+                                            DELETE
                                         </Button>
-                                        
+
                                     </td>
                                 </tr>
                             )
                             : null
                     }
-
-
                 </tbody>
             </Table>
         )
@@ -213,59 +227,86 @@ const Products = (props) => {
         )
     }
 
-    const renderUpdateProductModal = () => {
+    const renderUpdateProductModal = (productItem) => {
         if (!productItem) {
-            console.log('aaaaa')
             return null;
-        }
-        console.log("product",productItem)
-        return (
-            <NewModal
-                show={showUpdateModal}
-                handleClose={closeUpdateProductForm}
-                modalTitle={'Update Sản Phẩm'}
-                handleSave={updateProductForm}
-            >
-                <Input
-                    value={productItem.name}
-                    placeholder={'Tên Sản Phẩm'}
-                    onChange={(e) => { setName(e.target.value) }}
-                />
-                <Input
-                    value={productItem.quantity}
-                    placeholder={'Số lượng'}
-                    onChange={(e) => { setQuantity(e.target.value) }}
-                />
-                <Input
-                    value={productItem.price}
-                    placeholder={'Giá'}
-                    onChange={(e) => { setPrice(e.target.value) }}
-                />
-                <Input
-                    value={productItem.description}
-                    placeholder={'Description'}
-                    onChange={(e) => { setDescription(e.target.value) }}
-                />
-                <select
-                    className="form-control"
-                    value={productItem.categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
+        } else {
+            console.log(productItem)
+            return (
+                <NewModal
+                    show={showUpdateModal}
+                    handleClose={closeUpdateProductForm}
+                    modalTitle={'Update Sản Phẩm'}
+                    handleSave={updateProductForm}
                 >
-                    <option>{productItem.category.name}</option>
-                    {createCategoryList(category.categories).map(option =>
-                        <option key={option.value} value={option.value}>{option.name}</option>
-                    )}
-                </select>
+                    <Input
+                        value={productItem.name}
+                        placeholder={'Tên Sản Phẩm'}
+                        onChange={(e) => { setProductItem({ ...productItem, name: e.target.value }) }}
+                    />
+                    <Input
+                        type={'number'}
+                        value={productItem.quantity}
+                        placeholder={'Số lượng'}
+                        onChange={(e) => { setProductItem({ ...productItem, quantity: e.target.value }) }}
+                    />
+                    <Input
+                        type={'number'}
+                        value={productItem.price}
+                        placeholder={'Giá'}
+                        onChange={(e) => { setProductItem({ ...productItem, price: e.target.value }) }}
+                    />
+                    <Input
+                        value={productItem.description}
+                        placeholder={'Description'}
+                        onChange={(e) => { setProductItem({ ...productItem, description: e.target.value }) }}
+                    />
+                    {
+                        productItem.category ?
+                            <select
+                                className="form-control"
+                                value={productItem.category.id}
+                                onChange={(e) => { setProductItem({ ...productItem, category: { name: productItem.category.name, id: e.target.value } }) }}
+                            >
+                                <option>
+                                    {
+                                        productItem.category &&
+                                            productItem.category.name ?
+                                            productItem.category.name : 'Danh Mục Đã Bị Xóa'
+                                    }
+                                </option>
+                                {createCategoryList(category.categories).map(option =>
+                                    <option key={option.value} value={option.value}>{option.name}</option>
+                                )}
+                            </select>
+                            :
+                            <select
+                                className="form-control"
+                                value={productItem.categoryId}
+                                onChange={(e) => { setProductItem({ ...productItem, category: { id: e.target.value } }) }}
+                            >
+                                <option>
+                                    {
+                                        'Danh Mục Đã Bị Xóa'
+                                    }
+                                </option>
+                                {createCategoryList(category.categories).map(option =>
+                                    <option key={option.value} value={option.value}>{option.name}</option>
+                                )}
+                            </select>
 
-                {
-                    productItem.productImages && productItem.productImages.length > 0
-                        ? productImages.map((image, index) => <div key={index}>{image.name}</div>)
-                        : null
-                }
+                    }
 
-                <input type='file' name='productImage' onChange={handleProductImages} />
-            </NewModal>
-        )
+                    <h6 style={{ color: 'red', padding: '10px 0 10px 0' }}>Hình ảnh sản phẩm</h6>
+                    {
+                        productItem.productImages && productItem.productImages.length > 0
+                            ? productItem.productImages.map((image, index) => <div key={index}>{image.img}</div>)
+                            : 'Chưa có Hình ảnh'
+                    }
+                </NewModal>
+            )
+        }
+
     }
 
     const handleCloseProductDetailsModal = () => {
@@ -357,7 +398,9 @@ const Products = (props) => {
             {/* Model Product Details */}
             {renderProductDetailsModal()}
 
-            {renderUpdateProductModal()}
+            {renderUpdateProductModal(productItem)}
+
+            <ToastContainer />
 
         </Layout>
     )

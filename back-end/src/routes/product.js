@@ -24,8 +24,7 @@ const upload = multer({ storage });
 router.post('/product/create', requireSignin, adminMiddleware,
     upload.array('productImage'), createProduct);
 
-router.post('/product/update', requireSignin, adminMiddleware,
-    upload.array('productImage'), updateProduct);
+router.post('/product/update', updateProduct);
 
 //Nguoi su dung
 //Get danh sach san pham

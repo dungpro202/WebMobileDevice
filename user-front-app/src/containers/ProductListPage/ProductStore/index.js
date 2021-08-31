@@ -28,10 +28,10 @@ const ProductStore = (props) => {
             {Object.keys(product.productsByPrice).map((key, index) => {
                 return (
                     <Card
-                        headerLeft={`${props.match.params.slug} mobile under ${priceRange[key]}`}
+                        headerLeft={`${props.match.params.slug} giá dưới ${priceRange[key]} $`}
                         headerRight={
                             <MaterialButton
-                                title={"VIEW ALL"}
+                                title={"Xem tất cả"}
                                 style={{
                                     width: "96px",
                                 }}
@@ -64,7 +64,7 @@ const ProductStore = (props) => {
                                     <div className="productInfo">
                                         <div style={{ margin: "10px 0" }}>{product.name}</div>
                                         <div>
-                                            <Rating value="4.3" />
+                                            <Rating value="5.0" />
                                             &nbsp;&nbsp;
                                             <span
                                                 style={{
@@ -73,7 +73,7 @@ const ProductStore = (props) => {
                                                     fontSize: "12px",
                                                 }}
                                             >
-                                                (3353)
+                                                (9999)
                                             </span>
                                         </div>
                                         <Price value={product.price} />

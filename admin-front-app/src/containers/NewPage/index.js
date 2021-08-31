@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPage } from '../../actions';
 import Layout from '../../components/Layout'
@@ -194,7 +194,7 @@ const NewPage = (props) => {
                     :
                     <>
                         {renderCreatePageModal()}
-                        <button onClick={() => setCreateModal(true)}>Create Page</button>
+                        <Button onClick={() => setCreateModal(true)}>Create Page</Button>
                     </>
             }
 

@@ -25,6 +25,7 @@ const getProducts = () => {
 
 // modified actrion
 export const addProduct = (form) => {
+  console.log(form)
   return async (dispatch) => {
     try {
       dispatch({ type: productConstants.ADD_PRODUCT_REQUEST });
@@ -43,11 +44,12 @@ export const addProduct = (form) => {
 
 // update
 export const updateProduct = (form) => {
+  console.log(form)
   return async (dispatch) => {
     try {
       dispatch({ type: productConstants.UPDATE_PRODUCT_REQUEST });
       const res = await axiosInstance.post(`product/update`, form);
-      if (res.status === 201) {
+      if (res.status === 200) {
         dispatch({ type: productConstants.UPDATE_PRODUCT_SUCCESS });
         dispatch(getProducts());
       } else {

@@ -49,13 +49,13 @@ const Address = ({
                     <div style={{ width: "100%" }}>
                         <div className="addressDetail">
                             <div>
-                                <span className="addressName">{adr.name}</span>
+                                <span className="addressName">Người Nhận: {adr.name}</span>
                                 <span className="addressType">{adr.addressType}</span>
-                                <span className="addressMobileNumber">{adr.mobileNumber}</span>
+                                <span className="addressMobileNumber">SĐT: {adr.mobileNumber}</span>
                             </div>
                             {adr.selected && (
                                 <Anchor
-                                    name="EDIT"
+                                    name="Chỉnh Sửa"
                                     onClick={() => enableAddressEditForm(adr)}
                                     style={{
                                         fontWeight: "500",
@@ -65,11 +65,14 @@ const Address = ({
                             )}
                         </div>
                         <div className="fullAddress">
-                            {adr.address} <br /> {`${adr.state} - ${adr.pinCode}`}
+                            Địa Chỉ: {adr.town},  {adr.district},{adr.city}<br />
+                        </div>
+                        <div className="fullAddress">
+                            Địa Chỉ Chi Tiết: {adr.address} <br />
                         </div>
                         {adr.selected && (
                             <MaterialButton
-                                title="DELIVERY HERE"
+                                title="Xác Nhận Địa Chỉ"
                                 onClick={() => confirmDeliveryAddress(adr)}
                                 style={{
                                     width: "200px",
@@ -158,7 +161,7 @@ const CheckoutPage = (props) => {
             totalAmount,
             items,
             paymentStatus: "pending",
-            paymentType:"cod"
+            paymentType: "cod"
         };
 
         console.log(payload);
@@ -185,7 +188,11 @@ const CheckoutPage = (props) => {
         return (
             <Layout>
                 <Card>
-                    <div>Thank you</div>
+                    <div style={{ color: '#4834d4', margin: '50px 0 50px 100px' }}>
+                        <div >Đơn Hàng Của Bạn Đã Được Xác Nhận</div>
+                        <div>Thời gian Giao Hàng Dự Kiến 3 đến 5 ngày</div>
+                        <div>Thông Tin Liên Hệ : 0377276515 </div>
+                    </div>
                 </Card>
             </Layout>
         );
@@ -198,7 +205,7 @@ const CheckoutPage = (props) => {
                     {/* check if user logged in or not */}
                     <CheckoutStep
                         stepNumber={"1"}
-                        title={"LOGIN"}
+                        title={"Đăng Nhập"}
                         active={!auth.authenticate}
                         body={
                             auth.authenticate ? (
@@ -215,12 +222,12 @@ const CheckoutPage = (props) => {
                     />
                     <CheckoutStep
                         stepNumber={"2"}
-                        title={"DELIVERY ADDRESS"}
+                        title={"Địa Chỉ Giao Hàng"}
                         active={!confirmAddress && auth.authenticate}
                         body={
                             <>
                                 {confirmAddress ? (
-                                    <div className="stepCompleted">{`${selectedAddress.name} ${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
+                                    <div className="stepCompleted">{`${selectedAddress.name} ${selectedAddress.address}`}</div>
                                 ) : (
                                     address.map((adr) => (
                                         <Address
@@ -242,7 +249,7 @@ const CheckoutPage = (props) => {
                     ) : auth.authenticate ? (
                         <CheckoutStep
                             stepNumber={"+"}
-                            title={"ADD NEW ADDRESS"}
+                            title={"Thêm Địa Chỉ Giao Hàng"}
                             active={false}
                             onClick={() => setNewAddress(true)}
                         />
@@ -250,7 +257,7 @@ const CheckoutPage = (props) => {
 
                     <CheckoutStep
                         stepNumber={"3"}
-                        title={"ORDER SUMMARY"}
+                        title={"Xem Lại Đơn Hàng"}
                         active={orderSummary}
                         body={
                             orderSummary ? (
@@ -277,11 +284,11 @@ const CheckoutPage = (props) => {
                                 }}
                             >
                                 <p style={{ fontSize: "12px" }}>
-                                    Order confirmation email will be sent to{" "}
+                                    Email xác nhận đơn hàng sẽ được gửi đến {" "}
                                     <strong>{auth.user.email}</strong>
                                 </p>
                                 <MaterialButton
-                                    title="CONTINUE"
+                                    title="Tiếp Tục"
                                     onClick={userOrderConfirmation}
                                     style={{
                                         width: "200px",
@@ -293,7 +300,7 @@ const CheckoutPage = (props) => {
 
                     <CheckoutStep
                         stepNumber={"4"}
-                        title={"PAYMENT OPTIONS"}
+                        title={"Phương Thức Thanh Toán"}
                         active={paymentOption}
                         body={
                             paymentOption && (
@@ -306,16 +313,18 @@ const CheckoutPage = (props) => {
                                         }}
                                     >
                                         <input type="radio" name="paymentOption" value="cod" />
-                                        <div>Cash on delivery</div>
+                                        <div>Thanh toán khi giao hàng</div>
                                     </div>
+                                    
                                     <MaterialButton
-                                        title="CONFIRM ORDER"
+                                        title="Xác Nhận Đơn Hàng"
                                         onClick={onConfirmOrder}
                                         style={{
                                             width: "200px",
                                             margin: "0 0 20px 20px",
                                         }}
                                     />
+                                    <div style={{color: "#535c68",margin :'0 auto'}}>Bằng cách đặt hàng, bạn đồng ý với Điều khoản sử dụng của FPT Shop</div>
                                 </div>
                             )
                         }

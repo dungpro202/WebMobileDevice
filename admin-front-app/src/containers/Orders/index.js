@@ -42,6 +42,7 @@ const Orders = (props) => {
           key={index}
           headerLeft={`Mã đơn hàng: ${orderItem._id}`}
           headerRight={`Khách Hàng: ${orderItem.user.firstName} ${orderItem.user.lastName}`}
+          headerRight2={`Trạng Thái: ${orderItem.paymentStatus}`}
         >
           <div className="orderTop">
             <div>

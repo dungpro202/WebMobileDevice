@@ -4,7 +4,9 @@ const initState = {
     categories: [],
     loading: false,
     error: null,
+    notification: null,
 }
+
 
 //Xem lai bai 15 
 const buildNewCategories = (parentId, categories, category) => {
@@ -17,7 +19,7 @@ const buildNewCategories = (parentId, categories, category) => {
                 _id: category._id,
                 name: category.name,
                 slug: category.slug,
-                type:category.type,
+                type: category.type,
                 children: [],
             }
         ]
@@ -50,11 +52,14 @@ const buildNewCategories = (parentId, categories, category) => {
 }
 
 const categoryReducer = (state = initState, action) => {
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     switch (action.type) {
         case categoryConstants.GET_ALL_CATEGORIES_SUCCESS:
             state = {
                 ...state,
                 categories: action.payload.categories,
+                notification: null,
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORIES_REQUEST:
@@ -70,6 +75,7 @@ const categoryReducer = (state = initState, action) => {
                 ...state,
                 categories: updateCategoris,
                 loading: false,
+                notification: `Thêm mới Thành Công  ----  ${time}`
             }
             break;
         case categoryConstants.ADD_NEW_CATEGORIES_FAILURE:
@@ -77,7 +83,7 @@ const categoryReducer = (state = initState, action) => {
                 ...initState,
                 loading: false,
                 error: action.payload.error,
-
+                notification: `Thêm mới Thất Bại   ---- ${time}`
             }
             break;
         case categoryConstants.UPDATE_CATEGORIES_REQUEST:
@@ -90,6 +96,7 @@ const categoryReducer = (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
+                notification: `Cập Nhật Thành Công  ----   ${time}`
             }
             break;
         case categoryConstants.UPDATE_CATEGORIES_FAILURE:
@@ -97,6 +104,7 @@ const categoryReducer = (state = initState, action) => {
                 ...state,
                 error: action.payload.error,
                 loading: false,
+                notification: `Cập Nhật Thất Bại   ---  ${time}`,
             }
             break;
         case categoryConstants.DELETE_CATEGORIES_REQUEST:
@@ -109,13 +117,15 @@ const categoryReducer = (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
+                notification: `Xóa Thành Công  ----   ${time}`,
             }
             break;
         case categoryConstants.DELETE_CATEGORIES_FAILURE:
+
             state = {
                 ...state,
-                error: action.payload.error,
                 loading: false,
+                notification: ` Xóa Thất Bại, Danh Mục Chứa SP   ${time}`,
             }
             break;
         default:

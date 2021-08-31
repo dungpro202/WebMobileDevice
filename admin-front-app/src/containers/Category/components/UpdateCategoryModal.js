@@ -45,7 +45,7 @@ const UpdateCategoriesModal = (props) => {
                             <select
                                 className="form-control"
                                 value={item.parentId}
-                                onChange={(e) => { handleCategoryInput('name', e.target.value, index, 'expanded') }}
+                                onChange={(e) => { handleCategoryInput('parentId', e.target.value, index, 'expanded') }}
 
                             >
                                 <option>Select Category Parent</option>
@@ -84,11 +84,12 @@ const UpdateCategoriesModal = (props) => {
                                 onChange={(e) => { handleCategoryInput('name', e.target.value, index, 'checked') }}
                             />
                         </Col>
+                        {/* cateory parent */}
                         <Col>
                             <select
                                 className="form-control"
                                 value={item.parentId}
-                                onChange={(e) => { handleCategoryInput('name', e.target.value, index, 'checked') }}
+                                onChange={(e) => { handleCategoryInput('parentId', e.target.value, index, 'checked') }}
 
                             >
                                 <option>Select Category Parent</option>

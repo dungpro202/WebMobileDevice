@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { createAccountUser, getOrdersByAccountId } from '../../actions';
@@ -6,6 +6,8 @@ import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input';
 import NewModal from '../../components/UI/NewModal';
 import './style.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
 * @author
@@ -26,6 +28,12 @@ export const Account = (props) => {
     const [showOrderByAccount, setShowOrderByAccount] = useState(false);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (account.notification) {
+            toast(account.notification);
+        }
+    }, [account.notification])
 
     const handleCloseCreate = () => setShowCreateModel(false);
     const handleSaveCreate = () => {
@@ -86,7 +94,7 @@ export const Account = (props) => {
                                         order.items.map((item, index) => {
                                             return (
                                                 <div className="orderDetails" key={index}>
-                                                    <div className="itemStt" >{index+1}.</div>
+                                                    <div className="itemStt" >{index + 1}.</div>
                                                     <div className="itemName" >{item.productId.name}  </div>
                                                     <div className="itemQty">SL: {item.purchasedQty}</div>
                                                     <div className="itemPrice">Giá Tiền: {item.payablePrice}</div>
@@ -137,7 +145,7 @@ export const Account = (props) => {
                                             Xem đơn hàng
                                         </Button>
                                     </td>
-                                    
+
                                 </tr>
                             ) : null
                     }
@@ -240,6 +248,8 @@ export const Account = (props) => {
             {renderUpdateAccountUser()}
 
             {renderOrdersByAccountId(orderByAccount)}
+
+            <ToastContainer />
 
         </Layout>
     )
