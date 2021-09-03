@@ -7,6 +7,8 @@ import Card from "../../components/UI/Card";
  **/
 
 const PriceDetails = (props) => {
+  const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
   return (
     <Card headerLeft={"Thông Tin Thanh Toán"} style={{ maxWidth: "380px" }}>
       <div
@@ -17,7 +19,7 @@ const PriceDetails = (props) => {
       >
         <div className="flexRow sb" style={{ margin: "10px 0" }}>
           <div>Giá ({props.totalItem} sản phẩm)</div>
-          <div>{props.totalPrice} $</div>
+          <div>{formatCash(props.totalPrice)} VNĐ</div>
         </div>
         <div className="flexRow sb" style={{ margin: "10px 0" }}>
           <div>Phí Vận Chuyển</div>
@@ -26,7 +28,7 @@ const PriceDetails = (props) => {
         <br/>
         <div className="flexRow sb" style={{ margin: "10px 0" }}>
           <div>Tổng Tiền</div>
-          <div>{props.totalPrice} $</div>
+          <div>{formatCash(props.totalPrice)} VNĐ</div>
         </div>
       </div>
     </Card>

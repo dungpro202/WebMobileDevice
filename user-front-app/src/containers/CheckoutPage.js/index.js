@@ -156,8 +156,23 @@ const CheckoutPage = (props) => {
             payablePrice: cart.cartItems[key].price,
             purchasedQty: cart.cartItems[key].qty,
         }));
+        const itemRecords = Object.keys(cart.cartItems).map((key) => ({
+            productName: cart.cartItems[key].name,
+            productImage: cart.cartItems[key].img,
+            productPrice: cart.cartItems[key].price,
+            productQty: cart.cartItems[key].qty,
+        }));
+
         const payload = {
             addressId: selectedAddress._id,
+            record: {
+                addressRecord: selectedAddress.address,
+                addressTypeRecord:selectedAddress.addressType,
+                nameRecord: selectedAddress.name,
+                phoneRecord: selectedAddress.mobileNumber,
+                itemRecords,
+                totalRecord:totalAmount,
+            },
             totalAmount,
             items,
             paymentStatus: "pending",
@@ -315,7 +330,7 @@ const CheckoutPage = (props) => {
                                         <input type="radio" name="paymentOption" value="cod" />
                                         <div>Thanh toán khi giao hàng</div>
                                     </div>
-                                    
+
                                     <MaterialButton
                                         title="Xác Nhận Đơn Hàng"
                                         onClick={onConfirmOrder}
@@ -324,7 +339,7 @@ const CheckoutPage = (props) => {
                                             margin: "0 0 20px 20px",
                                         }}
                                     />
-                                    <div style={{color: "#535c68",margin :'0 auto'}}>Bằng cách đặt hàng, bạn đồng ý với Điều khoản sử dụng của FPT Shop</div>
+                                    <div style={{ color: "#535c68", margin: '0 auto' }}>Bằng cách đặt hàng, bạn đồng ý với Điều khoản sử dụng của NAD Shop</div>
                                 </div>
                             )
                         }

@@ -16,8 +16,8 @@ const Price = (props) => {
       }}
     >
       {/* <BiRupee /> */}
-      $
       {props.value}
+      &nbsp;&nbsp;₫
     </div>
   );
 };

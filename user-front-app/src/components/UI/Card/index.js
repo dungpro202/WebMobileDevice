@@ -8,6 +8,7 @@ import "./style.css";
 
 const Card = (props) => {
   return (
+
     <div className="card" {...props}>
       {(props.headerLeft || props.headerRight) && (
         <div className="cardHeader">

@@ -17,6 +17,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Products = (props) => {
 
+    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
 
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -139,7 +141,7 @@ const Products = (props) => {
                                 <tr key={product._id}>
                                     <td>{index + 1}</td>
                                     <td>{product.name}</td>
-                                    <td>{product.price}</td>
+                                    <td>{formatCash(product.price)} ₫ </td>
                                     <td>{product.quantity}</td>
 
                                     <td>{
@@ -337,7 +339,7 @@ const Products = (props) => {
                     </Col>
                     <Col md={6}>
                         <label className="key">Giá</label>
-                        <p className="value">{productDetails.price}</p>
+                        <p className="value">{productDetails.price}  ₫</p>
                     </Col>
                 </Row>
                 <Row>

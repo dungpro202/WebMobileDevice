@@ -8,6 +8,8 @@ import './style.css';
 **/
 
 const CartItem = (props) => {
+    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
 
     const [qty, setQty] = useState(props.cartItem.qty);
 
@@ -36,7 +38,7 @@ const CartItem = (props) => {
                 <div className="cartItemDetails">
                     <div>
                         <p>{name}</p>
-                        <p>Giá: {price} $</p>
+                        <p>Giá: {formatCash(price)} VNĐ</p>
                     </div>
                     <div>Giao hàng từ 3-5 ngày</div>
                 </div>

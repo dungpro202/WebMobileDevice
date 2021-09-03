@@ -5,7 +5,6 @@ import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
 import { Link } from "react-router-dom";
 import { generatePublicUrl } from "../../urlConfig";
-import { BiRupee } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
 
 import "./style.css";
@@ -15,6 +14,7 @@ import { Breed } from "../../components/MaterialUI";
  * @author
  * @function OrderPage
  **/
+const formatCash = (cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 const OrderPage = (props) => {
   const dispatch = useDispatch();
@@ -37,40 +37,46 @@ const OrderPage = (props) => {
           ]}
           breedIcon={<IoIosArrowForward />}
         />
-        {user.orders.map((order) => {
-          return order.items.map((item) => (
-            <Card style={{ display: "block", margin: "5px 0" }}>
-              <Link
-                to={`/order_details/${order._id}`}
-                className="orderItemContainer"
-              >
-                <div className="orderImgContainer">
-                  {
-                    item.productId && item.productId.productImages.length > 0 ?
-                      <img
-                        className="orderImg"
-                        src={generatePublicUrl(
-                          item.productId.productImages[0].img
-                        )}
-                        alt="aa"
-                      />
-                      : null
-                  }
-                </div>
-                <div className="orderRow">
-                  <div className="orderName">{item.productId.name}</div>
-                  <div className="orderPrice">
-                    <BiRupee />
-                    {item.payablePrice}
-                  </div>
-                  <div>{order.paymentStatus}</div>
-                </div>
-              </Link>
-            </Card>
-          ));
+        {user.orders.map((order,index) => {
+
+          return (
+            <>
+            <h5> Đơn hàng : {index+1}</h5>
+              {order.items.map((item) => (
+                <Card style={{ display: "block", margin: "5px 0" }}>
+                  <Link
+                    to={`/order_details/${order._id}`}
+                    className="orderItemContainer"
+                  >
+                    <div className="orderImgContainer">
+                      {
+                        item.productId && item.productId.productImages.length > 0 ?
+                          <img
+                            className="orderImg"
+                            src={generatePublicUrl(
+                              item.productId.productImages[0].img
+                            )}
+                            alt="aa"
+                          />
+                          : null
+                      }
+                    </div>
+                    <div className="orderRow">
+                      <div className="orderName">{item.productId.name}</div>
+                      <div className="orderPrice">
+                        {formatCash(item.payablePrice)} ₫
+                      </div>
+                      <div>{order.paymentStatus}</div>
+                    </div>
+                  </Link>
+                </Card>
+              ))
+              }
+            </>
+          );
         })}
       </div>
-    </Layout>
+    </Layout >
   );
 };
 

@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 **/
 
 export const Account = (props) => {
+ const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
 
     const account = useSelector(state => state.account);
 
@@ -83,11 +85,11 @@ export const Account = (props) => {
                                 return <div key={order._id} className="order">
                                     <div className="orderId">Mã đơn hàng: {order._id}</div>
                                     <div className="orderTotal"> Giá Trị :
-                                        {
+                                        {formatCash(
                                             order.items.reduce((temp, item) =>
                                                 temp + item.payablePrice * item.purchasedQty
                                                 , 0)
-                                        }
+                                        )}₫
                                     </div>
                                     <div className="orderPaymentStatus">Trạng Thái: {order.paymentStatus}</div>
                                     {
@@ -97,7 +99,7 @@ export const Account = (props) => {
                                                     <div className="itemStt" >{index + 1}.</div>
                                                     <div className="itemName" >{item.productId.name}  </div>
                                                     <div className="itemQty">SL: {item.purchasedQty}</div>
-                                                    <div className="itemPrice">Giá Tiền: {item.payablePrice}</div>
+                                                    <div className="itemPrice">Giá Tiền: {formatCash(item.payablePrice)} ₫</div>
                                                 </div>
                                             )
                                         })

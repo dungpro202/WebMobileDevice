@@ -29,6 +29,8 @@ export const ProductDetailsPage = (props) => {
         dispatch(getProductDetailsById(payload));
     }, []);
 
+    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
     if (Object.keys(product.productDetails).length === 0) {
         return null;
     }
@@ -107,7 +109,7 @@ export const ProductDetailsPage = (props) => {
                         </div>
                         {/* <div className="extraOffer">Extra <BiRupee />4500 off </div> */}
                         <div className="flexRow priceContainer">
-                            <span className="price">$ {product.productDetails.price}</span>
+                            <span className="price">{formatCash(product.productDetails.price)} VNĐ</span>
                             <span className="discount" style={{ margin: '0 10px' }}>0% off</span>
                             {/* <span>i</span> */}
                         </div>

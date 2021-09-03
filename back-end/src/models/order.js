@@ -12,6 +12,39 @@ const orderSchema = new mongoose.Schema(
       ref: "UserAddress.address",
       required: true,
     },
+    record: {
+      addressRecord: {
+        type: String,
+      },
+      addressTypeRecord: {
+        type: String,
+      },
+      nameRecord: {
+        type: String,
+      },
+      phoneRecord: {
+        type: String,
+      },
+      itemRecords: [
+        {
+          productName: {
+            type: String
+          },
+          productImage: {
+            type: String,
+          },
+          productPrice: {
+            type: Number,
+          },
+          productQty: {
+            type: Number,
+          },
+        }
+      ],
+      totalRecord:{
+        type: Number,
+      }
+    },
     totalAmount: {
       type: Number,
       required: true,

@@ -11,6 +11,9 @@ import "./style.css";
  * @function Orders
  **/
 
+ const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+
 const Orders = (props) => {
   const order = useSelector((state) => state.order);
   const [type, setType] = useState("");
@@ -56,7 +59,7 @@ const Orders = (props) => {
             <div>
               <span className="title">Tổng Tiền</span>
               <br />
-              <span className="value">{orderItem.totalAmount}</span>
+              <span className="value">{formatCash(orderItem.totalAmount)} ₫</span>
             </div>
             <div>
               <span className="title">Hình Thức Thanh Toán</span> <br />

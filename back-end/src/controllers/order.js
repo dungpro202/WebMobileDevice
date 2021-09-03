@@ -26,6 +26,7 @@ exports.addOrder = (req, res) => {
             isCompleted: false,
           },
         ];
+        console.log('req.body order :',req.body)
         const order = new Order(req.body);
         order.save((error, order) => {
           if (error) return res.status(400).json({ error });

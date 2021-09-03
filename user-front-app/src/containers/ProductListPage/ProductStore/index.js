@@ -23,12 +23,14 @@ const ProductStore = (props) => {
         dispatch(getProductsBySlug(match.params.slug));
     }, []);
 
+    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
     return (
         <>
             {Object.keys(product.productsByPrice).map((key, index) => {
                 return (
                     <Card
-                        headerLeft={`${props.match.params.slug} giá dưới ${priceRange[key]} $`}
+                        headerLeft={`${props.match.params.slug} giá dưới ${formatCash(priceRange[key])} VNĐ`}
                         headerRight={
                             <MaterialButton
                                 title={"Xem tất cả"}
@@ -76,7 +78,7 @@ const ProductStore = (props) => {
                                                 (9999)
                                             </span>
                                         </div>
-                                        <Price value={product.price} />
+                                        <Price value={formatCash(product.price)} />
                                     </div>
                                 </Link>
                             ))}

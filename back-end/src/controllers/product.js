@@ -128,25 +128,25 @@ exports.getProductsBySlug = (req, res) => {
                             res.status(200).json({
                                 products,
                                 priceRange: {
-                                    under5k: 5000,
-                                    under10k: 10000,
-                                    under15k: 15000,
-                                    under20k: 20000,
-                                    under30k: 30000,
+                                    under1m: 1000000,
+                                    under3m: 3000000,
+                                    under5m: 5000000,
+                                    under10m: 10000000,
+                                    under100m: 10000000,
                                 },
                                 productsByPrice: {
-                                    under5k: products.filter((product) => product.price <= 5000),
-                                    under10k: products.filter(
-                                        (product) => product.price > 5000 && product.price <= 10000
+                                    under1m: products.filter((product) => product.price <= 1000000),
+                                    under3m: products.filter(
+                                        (product) => product.price > 1000000 && product.price <= 3000000
                                     ),
-                                    under15k: products.filter(
-                                        (product) => product.price > 10000 && product.price <= 15000
+                                    under5m: products.filter(
+                                        (product) => product.price > 3000000 && product.price <= 5000000
                                     ),
-                                    under20k: products.filter(
-                                        (product) => product.price > 15000 && product.price <= 20000
+                                    under10m: products.filter(
+                                        (product) => product.price > 5000000 && product.price <= 10000000
                                     ),
-                                    under30k: products.filter(
-                                        (product) => product.price > 20000 && product.price <= 30000
+                                    under100m: products.filter(
+                                        (product) => product.price > 10000000 && product.price <= 100000000
                                     ),
                                 },
                             });

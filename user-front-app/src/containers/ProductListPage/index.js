@@ -4,7 +4,7 @@ import getParams from '../../utils/getParams'
 import ProductStore from './ProductStore'
 import ProductPage from './ProductPage'
 import './style.css'
-import ClothingAndAccessories from './ClothingAndAccessories'
+import ProductOther from './ProductOther'
 
 /**
 * @author
@@ -25,7 +25,7 @@ const ProductListPage = (props) => {
         content = <ProductPage {...props} />;
         break;
       default:
-        content = <ClothingAndAccessories {...props} />;
+        content = <ProductOther {...props} />;
         break;
     }
 
