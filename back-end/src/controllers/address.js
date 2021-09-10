@@ -24,6 +24,7 @@ const UserAddress = require('../models/address');
 // create and update
 exports.addAddress = (req, res) => {
     //return res.status(200).json({body: req.body})
+    console.log('addAddressssssssssss',req.body);
     const { payload } = req.body;
     if (payload.address) {
       if (payload.address._id) {

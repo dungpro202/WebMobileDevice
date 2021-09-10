@@ -55,8 +55,8 @@ const Category = (props) => {
     // handel action Add Model
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-    const handleSave = () => {
-
+    const handleSave = (e) => {
+        e.preventDefault();
         //body : form -data
         const form = new FormData();
 
@@ -152,7 +152,8 @@ const Category = (props) => {
 
     const handleCloseUpdateCategoryForm = () => setUpdateCategoryModal(false);
 
-    const updateCategoriesForm = () => {
+    const updateCategoriesForm = (e) => {
+        e.preventDefault();
         const form = new FormData();
 
         expandedArray.forEach((item, index) => {

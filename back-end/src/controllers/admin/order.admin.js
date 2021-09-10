@@ -19,10 +19,17 @@ exports.updateOrder = (req, res) => {
   });
 };
 
+// exports.getCustomerOrders = async (req, res) => {
+//   const orders = await Order.find({})
+//     .populate("items.productId", "name")
+//     .populate("user","_id firstName lastName")
+//     .exec();
+//     console.log('orders',orders)
+//   res.status(200).json({ orders });
+// };
+
 exports.getCustomerOrders = async (req, res) => {
   const orders = await Order.find({})
-    .populate("items.productId", "name")
-    .populate("user","_id firstName lastName")
     .exec();
     console.log('orders',orders)
   res.status(200).json({ orders });

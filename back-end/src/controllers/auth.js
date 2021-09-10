@@ -13,7 +13,7 @@ const generateJwtToken = (_id, role) => {
 exports.signup = (req, res) => {
     User.findOne({ email: req.body.email }).exec(async (error, user) => {
         if (user)
-            return res.status(400).json({
+            return res.status(203).json({
                 error: "User already registered",
             });
 

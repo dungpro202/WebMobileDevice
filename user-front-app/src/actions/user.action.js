@@ -114,7 +114,7 @@ export const getOrders = () => {
     };
 };
 
-// single order with complete info and delivery location
+// đơn đặt hàng với thông tin đầy đủ và địa điểm giao hàng
 export const getOrder = (payload) => {
     return async (dispatch) => {
         try {

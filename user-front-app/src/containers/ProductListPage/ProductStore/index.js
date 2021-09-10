@@ -23,13 +23,14 @@ const ProductStore = (props) => {
         dispatch(getProductsBySlug(match.params.slug));
     }, []);
 
-    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const formatCash = (cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     return (
         <>
             {Object.keys(product.productsByPrice).map((key, index) => {
                 return (
                     <Card
+                        // headerLeft={`${props.match.params.slug} giá dưới ${formatCash(priceRange[key])} VNĐ`}
                         headerLeft={`${props.match.params.slug} giá dưới ${formatCash(priceRange[key])} VNĐ`}
                         headerRight={
                             <MaterialButton
@@ -58,10 +59,14 @@ const ProductStore = (props) => {
                                     className="productContainer"
                                 >
                                     <div className="productImgContainer">
-                                        <img
-                                            src={generatePublicUrl(product.productImages[0].img)}
-                                            alt=""
-                                        />
+                                        {product.productImages.length > 0 ?
+                                            <img
+                                                src={generatePublicUrl(product.productImages[0].img)}
+                                                alt=""
+                                            />
+                                            :null
+                                        }
+
                                     </div>
                                     <div className="productInfo">
                                         <div style={{ margin: "10px 0" }}>{product.name}</div>

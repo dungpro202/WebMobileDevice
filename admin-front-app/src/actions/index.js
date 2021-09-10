@@ -6,3 +6,5 @@ export * from './order.action';
 export * from './initialData.action';
 export * from './page.action';
 export * from './account.action';
+export * from './supplier.action';
+export * from './receipt.action';

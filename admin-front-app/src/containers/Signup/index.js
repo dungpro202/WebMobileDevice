@@ -6,6 +6,8 @@ import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signup } from "../../actions";
 import { useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * @author
@@ -30,6 +32,12 @@ const Signup = (props) => {
             setPassword("");
         }
     }, [user.loading]);
+
+    useEffect(() => {
+        if (user.error) {
+            toast(user.error);
+        }
+    }, [user.error])
 
     const userSignup = (e) => {
         e.preventDefault();
@@ -56,7 +64,7 @@ const Signup = (props) => {
         <Layout>
             <Container>
                 {user.message}
-                <Row style={{ marginTop: "50px" }}>
+                <Row style={{ marginTop: "150px" }}>
                     <Col md={{ span: 6, offset: 3 }}>
                         <Form onSubmit={userSignup}>
                             <Row>
@@ -102,6 +110,8 @@ const Signup = (props) => {
                     </Col>
                 </Row>
             </Container>
+            <ToastContainer />
+
         </Layout>
     );
 };

@@ -9,8 +9,9 @@ import {
     DropdownMenu
 } from '../MaterialUI';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, signout, signup as _signup } from '../../actions';
+import { getProductsSearch, login, signout, signup as _signup } from '../../actions';
 import Cart from '../UI/Cart';
+import { Redirect } from 'react-router';
 
 /**
 * @author
@@ -24,6 +25,8 @@ const Header = (props) => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [keyword, setKeyword] = useState("");
+
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
@@ -117,7 +120,7 @@ const Header = (props) => {
                                 setLoginModal(true);
                                 setSignup(true);
                             }}
-                            style={{ color: "#2874f0", cursor:"pointer" }}
+                            style={{ color: "#2874f0", cursor: "pointer" }}
                         >
                             Sign Up
                         </button>
@@ -127,6 +130,18 @@ const Header = (props) => {
         );
     };
 
+    const onChangeSearch = (e) => {
+        console.log(e.target.value)
+         setKeyword(e.target.value); 
+        console.log('keyword',keyword)
+         dispatch(getProductsSearch(e.target.value)) 
+        }
+
+    const onClickSearch =  () => {
+        <Redirect to="/home"/>
+        dispatch(getProductsSearch(keyword))
+    }
+
     return (
         <div className="header">
             {/* Login modal */}
@@ -134,7 +149,7 @@ const Header = (props) => {
                 <div className="authContainer">
                     <div className="row">
                         <div className="leftspace">
-                            {signup ? <h2>Đăng Ký</h2> : <h2>Đăng Nhập</h2> }
+                            {signup ? <h2>Đăng Ký</h2> : <h2>Đăng Nhập</h2>}
                             <p>Chào mừng bạn đến với NAD Shop</p>
                         </div>
                         <div className="rightspace">
@@ -158,7 +173,7 @@ const Header = (props) => {
                                 )}
 
                                 <MaterialInput
-                                    type="text"
+                                    type="email"
                                     label="Email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -195,11 +210,23 @@ const Header = (props) => {
                 </div>
 
                 <div className="searchInputContainer">
+                    {/* <form action="/search" >
+                        <input
+                            className="searchInput"
+                            placeholder={"Nhập tên điện thoại, phụ kiện... cần tìm"}
+                            value={keyword}
+                            name={"keyword"}
+                            onChange={(e) => { setKeyword(e.target.value) }}
+                        />
+                        <input type="submit" value="Submit"/>
+                    </form> */}
                     <input
                         className="searchInput"
                         placeholder={"Nhập tên điện thoại, phụ kiện... cần tìm"}
+                        value={keyword}
+                        onChange={onChangeSearch}
                     />
-                    <div className="searchIconContainer">
+                    <div className="searchIconContainer" onClick={onClickSearch}>
                         <IoIosSearch
                             style={{
                                 color: "#fff",

@@ -1,8 +1,6 @@
-  
 import axiosInstance from "../helpers/axios";
 import { productConstants } from "./constants";
 
-// new action
 const getProducts = () => {
   return async (dispatch) => {
     try {
@@ -23,7 +21,6 @@ const getProducts = () => {
   };
 };
 
-// modified actrion
 export const addProduct = (form) => {
   console.log(form)
   return async (dispatch) => {
@@ -32,7 +29,7 @@ export const addProduct = (form) => {
       const res = await axiosInstance.post(`product/create`, form);
       if (res.status === 201) {
         dispatch({ type: productConstants.ADD_PRODUCT_SUCCESS });
-        dispatch(getProducts());
+         dispatch(getProducts());
       } else {
         dispatch({ type: productConstants.ADD_PRODUCT_FAILURE });
       }
@@ -42,7 +39,6 @@ export const addProduct = (form) => {
   };
 };
 
-// update
 export const updateProduct = (form) => {
   console.log(form)
   return async (dispatch) => {
@@ -61,7 +57,6 @@ export const updateProduct = (form) => {
   };
 };
 
-// new action
 export const deleteProductById = (payload) => {
   return async (dispatch) => {
     try {
@@ -86,3 +81,4 @@ export const deleteProductById = (payload) => {
     }
   };
 };
+

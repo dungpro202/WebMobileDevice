@@ -37,12 +37,17 @@ const OrderPage = (props) => {
           ]}
           breedIcon={<IoIosArrowForward />}
         />
-        {user.orders.map((order,index) => {
+        {user.orders.map((order, index) => {
 
           return (
             <>
-            <h5> Đơn hàng : {index+1}</h5>
-              {order.items.map((item) => (
+            <div style={{display: "flex"}}>
+
+              <h5 style={{marginRight: "100px"}}> Đơn hàng : {index + 1}</h5>
+              <h5 style={{marginRight: "100px"}}> Tổng tiền : {formatCash(order.record.totalRecord)} ₫</h5>
+              <h5 style={{color: "green"}}>Trạng Thái : {order.paymentStatus}</h5>
+            </div>
+              {order.record.itemRecords.map((item) => (
                 <Card style={{ display: "block", margin: "5px 0" }}>
                   <Link
                     to={`/order_details/${order._id}`}
@@ -50,23 +55,25 @@ const OrderPage = (props) => {
                   >
                     <div className="orderImgContainer">
                       {
-                        item.productId && item.productId.productImages.length > 0 ?
+                        // item.productId && item.productId.productImages.length > 0 ?
+                        item.productImage ?
                           <img
                             className="orderImg"
-                            src={generatePublicUrl(
-                              item.productId.productImages[0].img
-                            )}
+                            src={generatePublicUrl(item.productImage)}
                             alt="aa"
                           />
                           : null
                       }
                     </div>
                     <div className="orderRow">
-                      <div className="orderName">{item.productId.name}</div>
+                      <div className="orderName">{item.productName}</div>
                       <div className="orderPrice">
-                        {formatCash(item.payablePrice)} ₫
+                        {item.productQty} Cái
                       </div>
-                      <div>{order.paymentStatus}</div>
+                      <div className="orderPrice">
+                        {formatCash(item.productPrice)} ₫
+                      </div>
+                  
                     </div>
                   </Link>
                 </Card>

@@ -15,7 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 **/
 
 export const Account = (props) => {
- const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    const formatCash = (cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 
     const account = useSelector(state => state.account);
@@ -38,15 +39,29 @@ export const Account = (props) => {
     }, [account.notification])
 
     const handleCloseCreate = () => setShowCreateModel(false);
-    const handleSaveCreate = () => {
+    const handleSaveCreate = (e) => {
+        e.preventDefault();
         const user = { firstName, lastName, email, password };
+        
+        // switch (firstName) {
+        //     case "":
+        //         toast('FirstName không được để trống');
+        //         return;
+        //     case firstName.length>5:
+        //         toast('FirstName không được để quá 50 kí tự');
+        //         return;
+        //     default:
+        //         break;
+
+        // }
         if (
             firstName === "" ||
             lastName === "" ||
             email === "" ||
             password === ""
         ) {
-            setShowCreateModel(false)
+            toast('Không được để trống');
+             //setShowCreateModel(false)
             return;
         }
         dispatch(createAccountUser(user));
@@ -70,6 +85,7 @@ export const Account = (props) => {
     }
 
     const renderOrdersByAccountId = (orderByAccount) => {
+        console.log('renderOrdersByAccountId', orderByAccount)
         return (
             <>
                 {
@@ -86,20 +102,20 @@ export const Account = (props) => {
                                     <div className="orderId">Mã đơn hàng: {order._id}</div>
                                     <div className="orderTotal"> Giá Trị :
                                         {formatCash(
-                                            order.items.reduce((temp, item) =>
-                                                temp + item.payablePrice * item.purchasedQty
+                                            order.record.itemRecords.reduce((temp, item) =>
+                                                temp + item.productPrice * item.productQty
                                                 , 0)
                                         )}₫
                                     </div>
                                     <div className="orderPaymentStatus">Trạng Thái: {order.paymentStatus}</div>
                                     {
-                                        order.items.map((item, index) => {
+                                        order.record.itemRecords.map((item, index) => {
                                             return (
                                                 <div className="orderDetails" key={index}>
                                                     <div className="itemStt" >{index + 1}.</div>
-                                                    <div className="itemName" >{item.productId.name}  </div>
-                                                    <div className="itemQty">SL: {item.purchasedQty}</div>
-                                                    <div className="itemPrice">Giá Tiền: {formatCash(item.payablePrice)} ₫</div>
+                                                    <div className="itemName" >{item.productName}  </div>
+                                                    <div className="itemQty">SL: {item.productQty}</div>
+                                                    <div className="itemPrice">Giá Tiền: {formatCash(item.productPrice)} ₫</div>
                                                 </div>
                                             )
                                         })
@@ -175,9 +191,11 @@ export const Account = (props) => {
                     value={lastName}
                     placeholder={'LastName'}
                     onChange={(e) => { setLastName(e.target.value) }}
+                    // errorMessage={'no no'}
                 />
                 <Input
                     value={email}
+                    type={'email'}
                     placeholder={'Email'}
                     onChange={(e) => { setEmail(e.target.value) }}
                 />
@@ -190,37 +208,37 @@ export const Account = (props) => {
         )
     }
 
-    const renderUpdateAccountUser = () => {
-        return (
-            <NewModal
-                show={showCreateModel}
-                handleClose={handleCloseCreate}
-                modalTitle={'Tạo Tài Khoản Khách Hàng Mới'}
-                handleSave={handleSaveCreate}
-            >
-                <Input
-                    value={firstName}
-                    placeholder={'FirstName'}
-                    onChange={(e) => { setFirstName(e.target.value) }}
-                />
-                <Input
-                    value={lastName}
-                    placeholder={'LastName'}
-                    onChange={(e) => { setLastName(e.target.value) }}
-                />
-                <Input
-                    value={email}
-                    placeholder={'Email'}
-                    onChange={(e) => { setEmail(e.target.value) }}
-                />
-                <Input
-                    value={password}
-                    placeholder={'Password'}
-                    onChange={(e) => { setPassword(e.target.value) }}
-                />
-            </NewModal>
-        )
-    }
+    // const renderUpdateAccountUser = () => {
+    //     return (
+    //         <NewModal
+    //             show={showCreateModel}
+    //             handleClose={handleCloseCreate}
+    //             modalTitle={'Cập Nhật Tài Khoản Khách Hàng Mới'}
+    //             handleSave={handleSaveCreate}
+    //         >
+    //             <Input
+    //                 value={firstName}
+    //                 placeholder={'FirstName'}
+    //                 onChange={(e) => { setFirstName(e.target.value) }}
+    //             />
+    //             <Input
+    //                 value={lastName}
+    //                 placeholder={'LastName'}
+    //                 onChange={(e) => { setLastName(e.target.value) }}
+    //             />
+    //             <Input
+    //                 value={email}
+    //                 placeholder={'Email'}
+    //                 onChange={(e) => { setEmail(e.target.value) }}
+    //             />
+    //             <Input
+    //                 value={password}
+    //                 placeholder={'Password'}
+    //                 onChange={(e) => { setPassword(e.target.value) }}
+    //             />
+    //         </NewModal>
+    //     )
+    // }
 
     return (
         <Layout sidebar>
@@ -245,11 +263,13 @@ export const Account = (props) => {
                 </Row>
             </Container>
 
+
             {renderCreateAccountUser()}
 
-            {renderUpdateAccountUser()}
+            {/* {renderUpdateAccountUser()} */}
 
             {renderOrdersByAccountId(orderByAccount)}
+
 
             <ToastContainer />
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { BiRupee } from "react-icons/bi";
 
 /**
  * @author
@@ -15,7 +14,6 @@ const Price = (props) => {
         margin: "5px 0",
       }}
     >
-      {/* <BiRupee /> */}
       {props.value}
       &nbsp;&nbsp;₫
     </div>

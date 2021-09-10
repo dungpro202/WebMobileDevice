@@ -7,8 +7,6 @@ import { Redirect, Route } from 'react-router-dom'
 * 
 **/
 
-//Xem lai bai 11
-
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} component={(props) => {
         const token = window.localStorage.getItem('token');

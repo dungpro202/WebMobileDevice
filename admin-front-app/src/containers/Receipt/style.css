@@ -1,0 +1,18 @@
+.title{
+    font-size: 16px;
+    font-weight: 600;
+    color:red;
+}
+.value{
+    font-size: 14px;
+    text-transform: capitalize;
+    color:rgb(72, 75, 199);
+}
+
+.hidden{
+    display: none;
+}
+
+.mystyle+tr{
+    display: contents;
+}

@@ -19,7 +19,7 @@ export const signup = (user) => {
                 }
             });
         } else {
-            if (res.status === 400) {
+            if (res.status === 203) {
                 dispatch({
                     type: userConstants.USER_REGISTER_FAILURE,
                     payload: {

@@ -15,9 +15,13 @@ const initState = {
     loading:false,
     error:null,
     message:'',
+    notification: null,
+
 }
 
 const authReducer = (state = initState, action) => {
+    let today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     console.log(action)
     switch (action.type) {
         case authConstants.LOGIN_REQUEST:
@@ -33,6 +37,13 @@ const authReducer = (state = initState, action) => {
                 token: action.payload.token,
                 authenticate: true,
                 authenticating: false
+            };
+            break;
+        case authConstants.LOGIN_FAILURE:
+            state = {
+                ...state,
+                authenticating: false,
+                notification:`${action.payload.error}   ------  ${time}`
             };
             break;
         case authConstants.LOGOUT_REQUEST:

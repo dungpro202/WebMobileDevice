@@ -49,29 +49,36 @@ const ProductPage = (props) => {
                     JSON.stringify(page.products)
                 }
                 <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                margin: '10px 0'
-            }}>
-                {
-                    page.products && page.products.map((product, index) => 
-                        <Card 
-                            key={index}
-                            style={{
-                                width: '400px',
-                                height: '200px',
-                                margin: '5px'
-                            }}
-                        >
-                            <img style={{
-                                width: '100%',
-                                height: '100%'
-                            }} src={product.img} alt="" />
-                        </Card>
-                    )
-                }
-            </div>
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                    margin: '10px 0'
+                }}>
+                    {
+                        page.products && page.products.map((product, index) =>
+                            <Card
+                                key={index}
+                                style={{
+                                    width: '400px',
+                                    height: '200px',
+                                    margin: '5px'
+                                }}
+                            >
+                                <a
+                                    key={index}
+                                    style={{ display: 'block' }}
+                                    href={product.navigateTo}
+                                >
+                                    <img style={{
+                                        width: '100%',
+                                        height: '100%'
+                                    }} src={product.img} alt="" />
+                                </a>
+
+                            </Card>
+                        )
+                    }
+                </div>
             </div>
         </>
     )

@@ -22,7 +22,7 @@
     padding: 10px 0 0 0;
 }
 .box-products .list-product .item-product {
-    width: calc((100% - 4px) / 5);
+    width: calc((100% - 140px) / 5);
     height: auto;
     min-height: 202px;
     float: left;

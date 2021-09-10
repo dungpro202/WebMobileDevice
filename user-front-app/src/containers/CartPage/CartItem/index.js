@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { generatePublicUrl } from '../../../urlConfig';
+import { useDispatch, useSelector } from 'react-redux';
+
 import './style.css';
 
 /**
@@ -8,22 +10,25 @@ import './style.css';
 **/
 
 const CartItem = (props) => {
-    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const product = useSelector(state => state.product)
+    const formatCash = (cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 
     const [qty, setQty] = useState(props.cartItem.qty);
-
     const {
-        _id, name, price, img  
+        _id, name, price, img
     } = props.cartItem;
 
+    const maxqty = product.products.find(item => item._id == _id)
+
     const onQuantityIncrement = () => {
+        if (qty >= maxqty.quantity) return;
         setQty(qty + 1);
         props.onQuantityInc(_id, qty + 1);
     }
 
     const onQuantityDecrement = () => {
-        if(qty <= 1) return;
+        if (qty <= 1) return;
         setQty(qty - 1);
         props.onQuantityDec(_id, qty - 1);
     }
@@ -55,7 +60,12 @@ const CartItem = (props) => {
                     <button onClick={onQuantityIncrement}>+</button>
                 </div>
                 {/* <button className="cartActionBtn">save for later</button> */}
-                <button className="cartActionBtn" style={{}}>Xóa</button>
+                <button
+                    className="cartActionBtn"
+                    onClick={() => props.onRemoveCartItem(_id)}
+                >
+                    Remove
+                </button>
             </div>
         </div>
     )

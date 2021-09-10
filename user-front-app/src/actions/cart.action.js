@@ -1,7 +1,29 @@
 
-import { cartConstants } from "./constants";
+import { cartConstants, productConstants } from "./constants";
 import store from '../store';
 import axiosInstance from "../helpers/axios";
+
+export const getAllProduct = () => {
+    return async dispatch => {
+
+        const res = await axiosInstance.get(`/cartproduct/getAllProduct`);
+        if (res.status === 200) {
+            dispatch({
+                type: productConstants.GET_ALL_PRODUCTS_SUCCESS,
+                payload: { products: res.data.products }
+            })
+        } else {
+            dispatch({
+                type: productConstants.GET_ALL_PRODUCTS_FAILURE,
+                payload: { error: res.data.error }
+            });
+            console.log('res2', res);
+
+        }
+        console.log(res);
+
+    }
+}
 
 const getCartItems = () => {
     return async dispatch => {
@@ -12,10 +34,11 @@ const getCartItems = () => {
                 const { cartItems } = res.data;
                 console.log({ getCartItems: cartItems })
                 if (cartItems) {
-                    dispatch({
-                        type: cartConstants.ADD_TO_CART_SUCCESS,
-                        payload: { cartItems }
-                    });
+                    dispatch(getAllProduct())
+                        .then(() => dispatch({
+                            type: cartConstants.ADD_TO_CART_SUCCESS,
+                            payload: { cartItems }
+                        }))
                 }
             }
         } catch (error) {
@@ -25,6 +48,7 @@ const getCartItems = () => {
 }
 
 export const addToCart = (product, newQty = 1) => {
+    console.error('addToCart', product,newQty);
     return async dispatch => {
 
         const {
@@ -32,9 +56,7 @@ export const addToCart = (product, newQty = 1) => {
                 cartItems
             },
             auth } = store.getState();
-        //console.log('action::products', products);
-        //const product = action.payload.product;
-        //const products = state.products;
+
         const qty = cartItems[product._id] ? parseInt(cartItems[product._id].qty + newQty) : 1;
         cartItems[product._id] = {
             ...product,
@@ -44,12 +66,6 @@ export const addToCart = (product, newQty = 1) => {
         if (auth.authenticate) {
             dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
             const payload = {
-                // cartItems: Object.keys(cartItems).map((key, index) => {
-                //     return {
-                //         quantity: cartItems[key].qty,
-                //         product: cartItems[key]._id
-                //     }
-                // })
                 cartItems: [{
                     product: product._id,
                     quantity: qty
@@ -66,27 +82,28 @@ export const addToCart = (product, newQty = 1) => {
         }
 
         console.log('addToCart::', cartItems);
+        dispatch(getAllProduct())
+            .then(() => dispatch({
+                type: cartConstants.ADD_TO_CART_SUCCESS,
+                payload: { cartItems }
+            }))
 
-        dispatch({
-            type: cartConstants.ADD_TO_CART_SUCCESS,
-            payload: { cartItems }
-        });
     }
 }
 
 
 
 export const updateCart = () => {
+    console.error('updateCart')
     return async dispatch => {
         const { auth } = store.getState();
         let cartItems = localStorage.getItem('cart') ?
             JSON.parse(localStorage.getItem('cart')) : null;
 
-        console.log('upppppppppp')
-
+            //add tu localstore vao database
         if (auth.authenticate) {
+            console.log('22xoa cart22')
             localStorage.removeItem('cart');
-            //dispatch(getCartItems());
             if (cartItems) {
                 const payload = {
                     cartItems: Object.keys(cartItems).map((key, index) => {
@@ -104,12 +121,15 @@ export const updateCart = () => {
                 }
             }
         } else {
+            console.log('ko dang nhap')
 
             if (cartItems) {
-                dispatch({
-                    type: cartConstants.ADD_TO_CART_SUCCESS,
-                    payload: { cartItems }
-                });
+                dispatch(getAllProduct())
+                    .then(() => dispatch({
+                        type: cartConstants.ADD_TO_CART_SUCCESS,
+                        payload: { cartItems }
+                    }))
+
             }
         }
 
@@ -118,26 +138,44 @@ export const updateCart = () => {
     }
 }
 
+//remove theo id
 export const removeCartItem = (payload) => {
+    console.error('removeCartItem', payload)
     return async (dispatch) => {
-      try {
-        dispatch({ type: cartConstants.REMOVE_CART_ITEM_REQUEST });
-        const res = await axiosInstance.post(`/user/cart/removeItem`, { payload });
-        if (res.status === 202) {
-          dispatch({ type: cartConstants.REMOVE_CART_ITEM_SUCCESS });
-          dispatch(getCartItems());
-        } else {
-          const { error } = res.data;
-          dispatch({
-            type: cartConstants.REMOVE_CART_ITEM_FAILURE,
-            payload: { error },
-          });
+        try {
+            const { auth } = store.getState();
+            let cartItems = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
+            if (auth.authenticate) {
+                localStorage.removeItem('cart');
+                dispatch({ type: cartConstants.REMOVE_CART_ITEM_REQUEST });
+                const res = await axiosInstance.post(`/user/cart/removeItem`, { payload });
+                if (res.status === 202) {
+                    dispatch({ type: cartConstants.REMOVE_CART_ITEM_SUCCESS });
+                    dispatch(getCartItems());
+                } else {
+                    const { error } = res.data;
+                    dispatch({
+                        type: cartConstants.REMOVE_CART_ITEM_FAILURE,
+                        payload: { error },
+                    });
+                }
+            } else {
+                if (cartItems) {
+                    delete cartItems[payload.productId]
+                    localStorage.setItem('cart', JSON.stringify(cartItems));
+                    dispatch(getAllProduct())
+                        .then(() => dispatch({
+                            type: cartConstants.ADD_TO_CART_SUCCESS,
+                            payload: { cartItems }
+                        }))
+
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
     };
-  };
+};
 
 
 export {

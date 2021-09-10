@@ -11,10 +11,11 @@ function runUpdate(condition, updateData) {
 }
 
 exports.addItemToCart = (req, res) => {
+    console.log('addItemToCart',req.body)
     Cart.findOne({ user: req.user._id }).exec((error, cart) => {
         if (error) return res.status(400).json({ error });
         if (cart) {
-            //if cart already exists then update cart by quantity
+           // nếu đã có giỏ hàng thì cập nhật giỏ hàng theo số lượng
             let promiseArray = [];
 
             req.body.cartItems.forEach((cartItem) => {
@@ -37,20 +38,12 @@ exports.addItemToCart = (req, res) => {
                     };
                 }
                 promiseArray.push(runUpdate(condition, update));
-                //Cart.findOneAndUpdate(condition, update, { new: true }).exec();
-                // .exec((error, _cart) => {
-                //     if(error) return res.status(400).json({ error });
-                //     if(_cart){
-                //         //return res.status(201).json({ cart: _cart });
-                //         updateCount++;
-                //     }
-                // })
             });
             Promise.all(promiseArray)
                 .then((response) => res.status(201).json({ response }))
                 .catch((error) => res.status(400).json({ error }));
         } else {
-            //if cart not exist then create a new cart
+            //Tạo mới cart
             const cart = new Cart({
                 user: req.user._id,
                 cartItems: req.body.cartItems,
@@ -65,26 +58,6 @@ exports.addItemToCart = (req, res) => {
     });
 };
 
-// exports.addToCart = (req, res) => {
-//     const { cartItems } = req.body;
-//     if(cartItems){
-//        if(Object.keys(cartItems).length > 0){
-//            Cart.findOneAndUpdate({
-//                "user": req.user._id
-//            }, {
-//                "cartItems": cartItems
-//            }, {
-//                 upsert: true, new: true, setDefaultsOnInsert: true
-//            }, (error, cartItems) => {
-//                if(error) return res.status(400).json({ error });
-//                if(cartItems) res.status(201).json({ message: 'Added Successfully' });
-//            })
-//        }
-//        //res.status(201).json({ cartItems });
-//     }else{
-//         //res.status(201).json({ req });
-//     }
-// }
 
 exports.getCartItems = (req, res) => {
     //const { user } = req.body.payload;

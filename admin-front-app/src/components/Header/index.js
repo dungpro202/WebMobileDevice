@@ -4,6 +4,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
 import { signout } from './../../actions'
+import nadshoplogo from '../../images/logo/nadshop6.png';
 import './style.css'
 
 /**
@@ -48,9 +49,11 @@ const Header = (props) => {
 
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="danger" variant="danger" style={{ zIndex: 1, position: "fixed", top: 0, left: 0, right: 0, marginBottom: "100px"}}>
-      <Container fluid>
-        <Link to="/" className="navbar-brand" style={{color: "white"}} >Admin Dashboard</Link>
+    <Navbar collapseOnSelect expand="lg"  style={{ zIndex: 1, position: "fixed", top: 0, left: 0, right: 0, marginBottom: "100px",backgroundColor:'#e74c3c'}}>
+      <Container fluid  style={{maxHeight: "46px"}}>
+        <Link to="/" className="navbar-brand logo" style={{color: "white",overflow:'hidden'}} >
+          <img className="logoimage" src={nadshoplogo} alt='NAD SHOP'/>
+          </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

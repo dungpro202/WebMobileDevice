@@ -68,23 +68,6 @@ module.exports.addCategory = (req, res, next) => {
     });
 }
 
-// // Lay ra tat ca danh muc
-// module.exports.getCategories= (req, res, next) =>{
-//     Category.find({})
-//     .exec((error, categories) =>{
-
-//          //Loi mongodb
-//          if (error) {
-//             return res.status(400).json({ error })
-//         }
-//         //Tim thanh cong
-//         if (categories) {
-//             return res.status(201).json({ categories: categories })
-//         }
-
-//     });
-// }
-
 // Lay ra tat ca danh muc theo cấp cha con
 module.exports.getCategories = (req, res, next) => {
     Category.find({})

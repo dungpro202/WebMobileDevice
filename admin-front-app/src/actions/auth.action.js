@@ -21,7 +21,7 @@ export const login = (user) => {
                 }
             });
         } else {
-            if (res.status === 400) {
+            if (res.status === 203) {
                 dispatch({
                     type: authConstants.LOGIN_FAILURE,
                     payload: {

@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use((req) => {
     return req;
 })
 
-// tra ve status 500 hoac 400 se chuyen ve trang login
+// tra ve status 500 se chuyen ve trang login
 axiosInstance.interceptors.response.use((res) => {
     return res;
 }, (error) => {

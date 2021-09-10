@@ -16,12 +16,29 @@ exports.getListAccount = async (req, res) => {
         });
 };
 
+// // co id
+// exports.getOrdersByAccountId = (req, res) => {
+//     const { accountId } = req.params;
+//     if (accountId) {
+//         Order.find({ user: accountId })
+//             .select("_id paymentStatus items")
+//             .populate("items.productId", "_id name productImages")
+//             .exec((error, orders) => {
+//                 if (error) return res.status(400).json({ error });
+//                 if (orders) {
+//                     res.status(200).json({ orders });
+//                 }
+//             });
+//     } else {
+//         return res.status(400).json({ error: "Params required" });
+//     }
+// };
+
+// theo record
 exports.getOrdersByAccountId = (req, res) => {
     const { accountId } = req.params;
     if (accountId) {
         Order.find({ user: accountId })
-            .select("_id paymentStatus items")
-            .populate("items.productId", "_id name productImages")
             .exec((error, orders) => {
                 if (error) return res.status(400).json({ error });
                 if (orders) {
@@ -32,5 +49,4 @@ exports.getOrdersByAccountId = (req, res) => {
         return res.status(400).json({ error: "Params required" });
     }
 };
-
 

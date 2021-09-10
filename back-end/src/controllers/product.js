@@ -43,36 +43,6 @@ exports.createProduct = (req, res, next) => {
 
 }
 
-// exports.updateProduct = (req, res) => {
-
-//     console.log('body', req)
-
-//     const { _id, name, price, description, category, quantity } = req.body;
-//     console.log('sss', name);
-//     // req.body.slug = slug_vietnamese(name);
-
-//     // Product.findOneAndUpdate(
-//     //     { product: req.body._id },
-//     //       {
-//     //         $set: {
-//     //           "name": name,
-//     //           "price": price,
-//     //           "description":description,
-//     //           "category":category,
-//     //           "quantity":quantity,
-//     //         //   "slug":req.body.slug,
-//     //         },
-//     //       }
-//     // ).exec(
-//     //     (error, updatedProduct) => {
-//     //         if (error) return res.status(400).json({ error });
-//     //         if (updatedProduct) {
-//     //             return res.status(200).json({ product: updatedProduct });
-//     //         }
-//     //     }
-//     // );
-//     return res.status(200).json({ qq: "chua" })
-// }
 
 exports.updateProduct = (req, res) => {
 
@@ -109,7 +79,11 @@ exports.updateProduct = (req, res) => {
 
 //Get danh sach san pham them slug category
 exports.getProductsBySlug = (req, res) => {
+    console.log('sluggggggg');
+
     const { slug } = req.params;
+    console.log('sluggggggg',slug);
+
     Category.findOne({ slug: slug })
         .select("_id type")
         .exec((error, category) => {
@@ -161,6 +135,7 @@ exports.getProductsBySlug = (req, res) => {
 
 
 exports.getProductDetailsById = (req, res) => {
+    console.log('kakaka')
     const { productId } = req.params;
     if (productId) {
         Product.findOne({ _id: productId }).exec((error, product) => {
@@ -196,3 +171,28 @@ exports.getProducts = async (req, res) => {
 
     res.status(200).json({ products });
 };
+
+exports.getProductsSearch= async(req, res) => {
+   const { searchText } = req.query;
+    console.log('searchText', req.query);
+    var qqq = {
+        name: { $regex: new RegExp(searchText, "i") },
+        //slug: { $regex: new RegExp(searchText, "i") },
+      };
+    Product.find(qqq).exec((err, results) => {
+        if(results){
+            res.status(200).json({products:results});
+        }
+    })
+}
+
+exports.getAllProduct= (req, res) => {
+    Product.find({}).exec((err, products) => {
+        if(err){
+            res.status(400).json(error);
+        }
+        if(products){
+            res.status(200).json({products:products});
+        }
+    })
+}

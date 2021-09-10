@@ -1,10 +1,12 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { Container, Form, Button, Row, Col } from 'react-bootstrap'
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import {  login } from '../../actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /**
 * @author
 * @function Signin
@@ -16,6 +18,13 @@ const Signin = (props) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const auth = useSelector(state => state.auth);
+
+    useEffect(() => {
+        if (auth.notification) {
+            toast(auth.notification);
+        }
+    }, [auth.notification])
+    
 
     // su dung dispatch
     const dispatch = useDispatch();
@@ -35,7 +44,7 @@ const Signin = (props) => {
     return (
         <Layout>
             <Container>
-                <Row style={{ marginTop: '50px' }}>
+                <Row style={{ marginTop: '150px' }}>
                     <Col md={{ span: 6, offset: 3 }}>
                         <Form onSubmit={userLogin}>
                             <Input
@@ -61,6 +70,7 @@ const Signin = (props) => {
                     </Col>
                 </Row>
             </Container>
+            <ToastContainer />
         </Layout>
 
     )

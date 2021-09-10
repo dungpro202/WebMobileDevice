@@ -41,7 +41,7 @@ export const getProductPage = (payload) => {
                     payload: { error }
                 })
             }
-        } catch(error) {
+        } catch (error) {
             console.log(error)
         }
 
@@ -61,13 +61,37 @@ export const getProductDetailsById = (payload) => {
                 payload: { productDetails: res.data.product }
             });
 
-        } catch(error) {
+        } catch (error) {
             console.log(error);
             dispatch({
                 type: productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE,
                 payload: { error: res.data.error }
             });
         }
+
+    }
+}
+
+export const getProductsSearch = (keyword) => {
+    return async dispatch => {
+        dispatch({ type: productConstants.SEARCH_PRODUCTS_REQUEST })
+        const res = await axiosInstance.get(`/search/?searchText=${keyword}`);
+        if (res.status === 200) {
+            dispatch({
+                type: productConstants.SEARCH_PRODUCTS_SUCCESS,
+                payload: res.data
+            });
+            console.log('res1', res);
+
+        } else {
+            dispatch({
+                type: productConstants.SEARCH_PRODUCTS_FAILURE,
+                payload: { error :res.data.error}
+            });
+            console.log('res2', res);
+
+        }
+        console.log(res);
 
     }
 }

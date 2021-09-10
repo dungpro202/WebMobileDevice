@@ -36,7 +36,7 @@ exports.requireSignin = (req, res, next) => {
         // jwt.decode()
     } else {
         // neu ko co token tra lai uy quyen
-        return res.status(400).json({ message: 'Authorization required, Ban ko co token' });
+        return res.status(400).json({ message: ' Ban ko co token' });
     }
 
     next();
@@ -44,7 +44,7 @@ exports.requireSignin = (req, res, next) => {
 
 exports.userMiddleware = (req, res, next) => {
     if (req.user.role !== 'user') {
-        return res.status(400).json({ message: 'User acess denied,khong co quyen truy cap' });
+        return res.status(400).json({ message: 'khong co quyen truy cap ' });
     }
     next();
 }

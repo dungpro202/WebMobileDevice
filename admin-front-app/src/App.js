@@ -6,14 +6,17 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import PrivateRoute from './components/HOC/PrivateRoute';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategory, getInitialData, isUSerLoggedIn } from './actions';
+import { getInitialData, isUSerLoggedIn } from './actions';
 import Products from './containers/Products';
 import Orders from './containers/Orders';
 import Category from './containers/Category';
 import NewPage from './containers/NewPage';
 import { Account } from './containers/Account';
-
+import { Supplier } from './containers/Supplier';
+import { Receipt } from './containers/Receipt';
+let i=0;
 function App() {
+console.log('i',i);i=i+1;
 
   const dispatch = useDispatch();
 
@@ -29,7 +32,11 @@ function App() {
     if (auth.authenticate) {
       dispatch(getInitialData())
     }
-  }, [auth.authenticate,dispatch]);
+    console.log('ddd')
+   console.log('authsds1',auth.authenticate)
+
+  }, [auth.authenticate]);
+
 
   return (
     <div className="App">
@@ -40,6 +47,8 @@ function App() {
         <PrivateRoute path="/category" exact component={Category} />
         <PrivateRoute path="/products" exact component={Products} />
         <PrivateRoute path="/orders" exact component={Orders} />
+        <PrivateRoute path="/supplier" exact component={Supplier} />
+        <PrivateRoute path="/receipt" exact component={Receipt} />
 
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />

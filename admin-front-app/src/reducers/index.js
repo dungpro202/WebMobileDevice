@@ -5,6 +5,8 @@ import productReducer from "./product.reducer";
 import pageReducer from "./page.reducer";
 import orderReducer from "./order.reducer";
 import accountReducer from "./account.reducer";
+import supplierReducer from "./supplier.reducer";
+import receiptReducer from "./receipt.reducer";
 import { combineReducers } from "redux";
 
 const rootReducer =  combineReducers({
@@ -15,6 +17,8 @@ const rootReducer =  combineReducers({
     page: pageReducer,
     order: orderReducer,
     account: accountReducer,
+    supplier: supplierReducer,
+    receipt: receiptReducer,
 })
 
 export default rootReducer;

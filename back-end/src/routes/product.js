@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireSignin, adminMiddleware } = require('../common-middleware/index');
-const { createProduct, getProductsBySlug, getProductDetailsById, deleteProductById, getProducts, updateProduct } = require('../controllers/product');
+const { createProduct, getProductsBySlug, getProductDetailsById, deleteProductById, getProducts, updateProduct,getProductsSearch, getAllProduct } = require('../controllers/product');
 const shortid = require('shortid');
 const multer = require('multer');
 const path = require('path')
@@ -30,12 +30,17 @@ router.post('/product/update', updateProduct);
 //Get danh sach san pham
 router.get('/products/:slug', getProductsBySlug);
 
+router.get('/search', getProductsSearch);
+
 //Get chi tiet san pham theo id 
 router.get("/product/:productId", getProductDetailsById);
 
 router.delete("/product/deleteProductById", requireSignin, adminMiddleware, deleteProductById);
 
 router.post("/product/getProducts", requireSignin, adminMiddleware, getProducts);
+
+router.get("/cartproduct/getAllProduct", getAllProduct);
+
 
 
 module.exports = router;

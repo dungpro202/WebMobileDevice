@@ -27,9 +27,12 @@ export const createAccountUser = (user) => {
                 dispatch({
                     type: accountConstants.SIGNUP_SUCCESS,
                 });
-                dispatch(getListAccount());   
-            } else {
-                dispatch({ type: accountConstants.SIGNUP_FAILURE });
+                dispatch(getListAccount());
+            } else if (res.status === 203) {
+                dispatch({
+                    type: accountConstants.SIGNUP_FAILURE,
+                    payload: { error: res.data.error }
+                });
             }
         } catch (error) {
             console.log(error);

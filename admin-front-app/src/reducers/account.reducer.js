@@ -27,7 +27,7 @@ const accountReducer = (state = initState, action) => {
         case accountConstants.SIGNUP_FAILURE:
             state = {
                 ...state,
-                notification: `Tạo Mới Account Thất Bại  ---   ${time}`,
+                notification: `-------Tạo Mới Account Thất Bại  -------  ------Lỗi: ${action.payload.error}------  ${time}`,
             };
             break;
 

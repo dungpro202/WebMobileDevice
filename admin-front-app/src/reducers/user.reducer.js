@@ -11,14 +11,16 @@ const userReducer = (state = initState, action) => {
         case userConstants.USER_REGISTER_REQUEST:
             state = {
                 ...state,
+                error:null,
                 loading: true,
             }
             break;
         case userConstants.USER_REGISTER_SUCCESS:
             state = {
                 ...state,
+                error: action.payload.message,
                 loading: false,
-                message: action.payload.message
+                //message: action.payload.message
             }
             break;
         case userConstants.USER_REGISTER_FAILURE:

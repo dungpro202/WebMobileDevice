@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOrder } from "../../actions";
 import Layout from "../../components/Layout";
 import Card from "../../components/UI/Card";
-import Price from "../../components/UI/Price";
+import { generatePublicUrl } from "../../urlConfig";
 
 import "./style.css";
 
@@ -13,6 +13,8 @@ import "./style.css";
  **/
 
 const OrderDetailsPage = (props) => {
+ const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.user.orderDetails);
 
@@ -53,13 +55,16 @@ const OrderDetailsPage = (props) => {
     }
   };
 
-  if (!(orderDetails && orderDetails.address)) {
-    return null;
+  if (!(orderDetails && orderDetails.record)) {
+    return (
+      <>
+      ssss
+      </>
+    );
   }
 
   return (
     <Layout>
-        asdsad
       <div
         style={{
           width: "1160px",
@@ -73,40 +78,39 @@ const OrderDetailsPage = (props) => {
         >
           <div className="delAdrContainer">
             <div className="delAdrDetails">
-              <div className="delTitle">Delivery Address</div>
-              <div className="delName">{orderDetails.address.name}</div>
-              <div className="delAddress">{orderDetails.address.address}</div>
+              <div className="delTitle">Địa Chỉ Giao Hàng</div>
+              <div className="delName">{orderDetails.record.nameRecord}</div>
+              <div className="delAddress">{orderDetails.record.addressRecord}</div>
               <div className="delPhoneNumber">
-                Phone number {orderDetails.address.mobileNumber}
+                Số Điện Thoại : {orderDetails.record.phoneRecord}
               </div>
             </div>
             <div className="delMoreActionContainer">
-              <div className="delTitle">More Actions</div>
-              <div className="delName">Download Invoice</div>
+              <div className="delTitle">Tổng Tiền: {formatCash(orderDetails.record.totalRecord)} VNĐ</div>
             </div>
           </div>
         </Card>
 
-        {orderDetails.items.map((item, index) => (
+        {orderDetails.record.itemRecords.map((item, index) => (
           <Card
             style={{ display: "flex", padding: "20px 0", margin: "10px 0" }}
           >
             <div className="flexRow">
               <div className="delItemImgContainer">
-                <img src={item.productId.productImages[0].img} alt="" />
+                <img src={generatePublicUrl(item.productImage)} alt="" />
               </div>
               <div style={{ width: "250px" }}>
-                <div className="delItemName">{item.productId.name}</div>
-                <Price value={item.payablePrice} />
+                <div className="delItemName">{item.productName}</div>
+                <div className="delItemName">Giá : {formatCash(item.productPrice)} VNĐ</div>
+                <div className="delItemName">Số Lượng:{item.productQty}</div>
               </div>
             </div>
             <div style={{ padding: "25px 50px" }}>
               <div className="orderTrack">
                 {orderDetails.orderStatus.map((status) => (
                   <div
-                    className={`orderStatus ${
-                      status.isCompleted ? "active" : ""
-                    }`}
+                    className={`orderStatus ${status.isCompleted ? "active" : ""
+                      }`}
                   >
                     <div
                       className={`point ${status.isCompleted ? "active" : ""}`}
@@ -121,7 +125,7 @@ const OrderDetailsPage = (props) => {
             </div>
             <div style={{ fontWeight: "500", fontSize: 14 }}>
               {orderDetails.orderStatus[3].isCompleted &&
-                `Delivered on ${formatDate2(orderDetails.orderStatus[3].date)}`}
+                `Đã giao Hàng vào ${formatDate2(orderDetails.orderStatus[3].date)}`}
             </div>
           </Card>
         ))}

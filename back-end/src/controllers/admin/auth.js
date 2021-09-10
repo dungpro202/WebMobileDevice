@@ -11,9 +11,8 @@ exports.signup = (req, res) => {
         .exec(async (err, user) => {
             // da toon tai user
             if (user) {
-                return res.status(400).json({ message: 'Admin already registered' })
+                return res.status(203).json({ error: 'Admin already registered' })
             };
-
             const {
                 firstName,
                 lastName,
@@ -32,12 +31,10 @@ exports.signup = (req, res) => {
                 role: 'admin'
             })
 
-
-
             _user.save((error, data) => {
                 if (error) {
                     console.log(data)
-                    return res.status(400).json({ error })
+                    return res.status(203).json({ error })
                 }
                 if (data) {
                     return res.status(201).json({
@@ -57,6 +54,7 @@ exports.signin = (req, res) => {
             }
 
             if (user) {
+                //so sanh mk bam
                 const isPassword = await user.authenticate(req.body.password);
                 //tao token va tzian cua token cua admin
                 if (isPassword && user.role === 'admin') {
@@ -67,7 +65,7 @@ exports.signin = (req, res) => {
                     );
                     const { _id, firstName, lastName, email, role, fullName } = user;
                     //luu cookie
-                    res.cookie('token', token, { expiresIn: '1d' })
+                    //res.cookie('token', token, { expiresIn: '1d' })
                     res.status(200).json({
                         token,
                         user: {
@@ -76,17 +74,16 @@ exports.signin = (req, res) => {
                     })
                 } else {
                     //neu mk ko dung
-                    return res.status(404).json({ message: 'Invalid password' })
+                    return res.status(203).json({ error: 'Invalid password' })
                 }
 
             } else {
-                return res.status(400).json({ message: 'Something went wrong,Invalid  email' })
+                return res.status(203).json({ error: 'Something went wrong,Invalid  email' })
             }
 
         })
 }
 
 exports.signout = (req, res) => {
-    res.clearCookie('token');
     res.status(200).json({ message: 'Signout Success.....!' })
 }

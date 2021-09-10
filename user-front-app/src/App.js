@@ -25,7 +25,7 @@ function App() {
     }, [auth.authenticate])
 
     useEffect(() => {
-        console.log('App.js - updateCart')
+        console.error('App.js - updateCart')
         dispatch(updateCart());
     }, [auth.authenticate]);
 

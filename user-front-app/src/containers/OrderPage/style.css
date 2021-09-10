@@ -2,6 +2,8 @@
     padding: 10px;
     box-sizing: border-box;
     display: flex;
+    text-decoration: none;
+    color: green;
 }
 .orderImgContainer{
     width: 80px;
@@ -21,7 +23,7 @@
     width: 300px;
     box-sizing: border-box;
     padding: 0 20px;
-    font-size: 12px;
+    font-size: 14px;
 }
 .orderPrice{
     box-sizing: border-box;

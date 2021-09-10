@@ -16,14 +16,16 @@ const Input = (props) => {
                     className="form-control form-control-sm"
                     value={props.value}
                     onChange={props.onChange}
+                    required
                 >
                     <option value="">{props.placeholder}</option>
-                    {
+                    {/* {
                         props.options.length > 0 ?
                             props.options.map((option, index) =>
                                 <option key={index} value={option.value}>{option.name}</option>
                             ) : null
-                    }
+                    } */}
+                    {props.children}
                 </select>
             </Form.Group>
             break;
@@ -32,6 +34,7 @@ const Input = (props) => {
             input = <Form.Group>
                 {props.label && <Form.Label>{props.label}</Form.Label>}
                 <Form.Control
+                    required
                     type={props.type}
                     placeholder={props.placeholder}
                     value={props.value}

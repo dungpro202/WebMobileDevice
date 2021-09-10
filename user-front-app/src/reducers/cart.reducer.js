@@ -23,6 +23,7 @@ const cartReducer = (state = initState, action) => {
             }
             break;
         case cartConstants.ADD_TO_CART_SUCCESS:
+            console.log("cart---Items",action.payload.cartItems)
             state = {
                 ...state,
                 cartItems: action.payload.cartItems,

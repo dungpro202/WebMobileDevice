@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Products = (props) => {
 
-    const formatCash=(cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const formatCash = (cash) => cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 
     const [name, setName] = useState('');
@@ -44,10 +44,11 @@ const Products = (props) => {
     }, [product.notification])
 
     const handleClose = () => setShow(false);
-    const handleSave = () => {
+    const handleSave = (e) => {
+        e.preventDefault();
         const form = new FormData();
         form.append('name', name);
-        form.append('quantity', quantity);
+        form.append('quantity', 0);
         form.append('price', price);
         form.append('description', description);
         form.append('category', categoryId);
@@ -192,12 +193,9 @@ const Products = (props) => {
                     placeholder={'Tên Sản Phẩm'}
                     onChange={(e) => { setName(e.target.value) }}
                 />
+
                 <Input
-                    value={quantity}
-                    placeholder={'Số lượng'}
-                    onChange={(e) => { setQuantity(e.target.value) }}
-                />
-                <Input
+                    type={'number'}
                     value={price}
                     placeholder={'Giá'}
                     onChange={(e) => { setPrice(e.target.value) }}
@@ -207,16 +205,16 @@ const Products = (props) => {
                     placeholder={'Description'}
                     onChange={(e) => { setDescription(e.target.value) }}
                 />
-                <select
-                    className="form-control"
+                <Input
+                    type={'select'}
+                    placeholder={'Select Category Parent'}
                     value={categoryId}
                     onChange={(e) => setCategoryId(e.target.value)}
                 >
-                    <option>Select Category Parent</option>
                     {createCategoryList(category.categories).map(option =>
                         <option key={option.value} value={option.value}>{option.name}</option>
                     )}
-                </select>
+                </Input>
 
                 {
                     productImages.length > 0
@@ -224,7 +222,7 @@ const Products = (props) => {
                         : null
                 }
 
-                <input type='file' name='productImage' onChange={handleProductImages} />
+                <input type='file' name='productImage' required onChange={handleProductImages} />
             </NewModal>
         )
     }
@@ -251,6 +249,7 @@ const Products = (props) => {
                         value={productItem.quantity}
                         placeholder={'Số lượng'}
                         onChange={(e) => { setProductItem({ ...productItem, quantity: e.target.value }) }}
+                        style={{ display: 'none' }}
                     />
                     <Input
                         type={'number'}
@@ -265,37 +264,29 @@ const Products = (props) => {
                     />
                     {
                         productItem.category ?
-                            <select
-                                className="form-control"
+                            <Input
+                                type={'select'}
                                 value={productItem.category.id}
                                 onChange={(e) => { setProductItem({ ...productItem, category: { name: productItem.category.name, id: e.target.value } }) }}
+                                placeholder={productItem.category &&
+                                    productItem.category.name ?
+                                    productItem.category.name : 'Danh Mục Đã Bị Xóa'}
                             >
-                                <option>
-                                    {
-                                        productItem.category &&
-                                            productItem.category.name ?
-                                            productItem.category.name : 'Danh Mục Đã Bị Xóa'
-                                    }
-                                </option>
                                 {createCategoryList(category.categories).map(option =>
                                     <option key={option.value} value={option.value}>{option.name}</option>
                                 )}
-                            </select>
+                            </Input>
                             :
-                            <select
+                            <Input
                                 className="form-control"
                                 value={productItem.categoryId}
                                 onChange={(e) => { setProductItem({ ...productItem, category: { id: e.target.value } }) }}
+                                placeholder={'Danh Mục Đã Bị Xóa'}
                             >
-                                <option>
-                                    {
-                                        'Danh Mục Đã Bị Xóa'
-                                    }
-                                </option>
                                 {createCategoryList(category.categories).map(option =>
                                     <option key={option.value} value={option.value}>{option.name}</option>
                                 )}
-                            </select>
+                            </Input>
 
                     }
 

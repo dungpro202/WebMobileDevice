@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 
 /**
- * @author Rizwan Khan
+ * @author 
  * @function
  **/
 
@@ -63,7 +63,7 @@ const MaterialInput = (props) => {
                 />
                 {props.rightElement ? props.rightElement : null}
             </div>
-            {touch && (
+            {/* {touch && (
                 <div
                     style={{
                         fontSize: "10px",
@@ -71,7 +71,7 @@ const MaterialInput = (props) => {
                         fontWeight: 500,
                     }}
                 >{`${props.label} is Required`}</div>
-            )}
+            )} */}
         </div>
     );
 };

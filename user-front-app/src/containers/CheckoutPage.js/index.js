@@ -230,7 +230,7 @@ const CheckoutPage = (props) => {
                                 </div>
                             ) : (
                                 <div>
-                                    <MaterialInput label="Email" />
+                                    Vui lòng Đăng Nhập
                                 </div>
                             )
                         }

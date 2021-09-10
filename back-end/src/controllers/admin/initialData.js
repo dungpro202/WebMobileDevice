@@ -1,6 +1,8 @@
 const Category = require('../../models/category');
 const Order = require('../../models/order');
 const Product = require('../../models/product');
+const Receipt = require('../../models/receipt');
+const Supplier = require('../../models/supplier');
 const User = require('../../models/user');
 
 
@@ -45,10 +47,19 @@ exports.initialData = async (req, res) => {
         .exec();
     const orders = await Order.find({})
         .populate("items.productId", "name")
-        .populate("user","_id firstName lastName")
+        .populate("user", "_id firstName lastName")
         .exec();
 
-    const accounts = await User.find({role:"user"})
+    const accounts = await User.find({ role: "user" })
+        .exec();
+
+    const suppliers = await Supplier.find({})
+        .exec();
+
+    const receipts = await Receipt.find({})
+        .populate("items.productId", "name")
+        .populate("createdBy", "_id email firstName lastName")
+        .populate("supplier", "_id name address")
         .exec();
 
     res.status(200).json({
@@ -56,7 +67,8 @@ exports.initialData = async (req, res) => {
         products,
         orders,
         accounts,
-
+        suppliers,
+        receipts
     })
 
 }
